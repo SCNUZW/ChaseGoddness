@@ -2,8 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="zy.chasegoddness">
 
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_SMS" />
+    <!-- BmobSDK所需的权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 推送所需的权限 -->
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".global.BaseApplication"
@@ -27,7 +35,11 @@
         <activity
             android:name=".ui.activity.ChatActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activity.GoddnessAccountActivity"></activity>
+        <activity android:name=".ui.activity.GoddnessAccountActivity" />
+        <activity android:name=".ui.activity.FriendsActivity" />
+        <activity android:name=".ui.activity.FriendsRegisterActivity" />
+        <activity android:name=".ui.activity.ThirdPlatformActivity" />
+        <activity android:name=".ui.activity.PrologueActivity"></activity>
     </application>
 
 </manifest>

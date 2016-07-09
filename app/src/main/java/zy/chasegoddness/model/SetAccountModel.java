@@ -11,11 +11,16 @@ import zy.chasegoddness.global.LocalDB;
 import zy.chasegoddness.ui.dialog.SetAccountDialog;
 
 /**
- * Created by Administrator on 2016/7/5.
+ * 设置女神账号的功能
  */
 public class SetAccountModel {
-    public void showDialog(FragmentManager manager) {
-        new SetAccountDialog().show(manager, "SetAccountDialog");
+    private SetAccountModel() {
+    }
+
+    public static SetAccountDialog showDialog(FragmentManager manager) {
+        SetAccountDialog dialog = new SetAccountDialog();
+        dialog.show(manager, "SetAccountDialog");
+        return dialog;
     }
 
     public static boolean isPhoneNumExist(Context context) {
@@ -24,6 +29,14 @@ public class SetAccountModel {
     }
 
     /**
+     * 保存设置的女神账号
+     */
+    public static void saveAccount(Context context, String phoneNum) {
+        new LocalDB(context).putPhoneNum(phoneNum);
+    }
+
+    /**
+     * 检验手机号码的合法性
      * 移动：134、135、136、137、138、139、150、151、157(TD)、158、159、187、188
      * 联通：130、131、132、152、155、156、185、186
      * 电信：133、153、180、189、（1349卫通）

@@ -1,6 +1,8 @@
 package zy.chasegoddness.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,12 +17,7 @@ import zy.chasegoddness.ui.view.MenuButton;
 
 public class MainActivity extends BaseActivity implements IMainView {
 
-    private MenuButton btn_menu;
-    private ProgressBarDeterminate pb_favorability;
-    private FrameLayout fl_scrim;
-    private ImageView iv_favourability, iv_favourability_bg, iv_goddness_sms_bg;
-    private TextView tv_goddness_sms, tv_evaluation, tv_sent;
-    private CheckBox cb_autoSend;
+    private static final int PROLOGUE_REQUEST = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +25,7 @@ public class MainActivity extends BaseActivity implements IMainView {
         setContentView(R.layout.activity_main);
 
         initView();
+        PrologueActivity.startActivityForResult(getContext(), PROLOGUE_REQUEST);
     }
 
     private final void initView() {
@@ -50,6 +48,20 @@ public class MainActivity extends BaseActivity implements IMainView {
         pb_favorability.setProgress(30);
     }
 
+    private Handler handler = new Handler();
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PROLOGUE_REQUEST) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showFavorabilityDialog(30, "好感度+");
+                }
+            }, 200);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     @Override
     public void showFavorabilityDialog(int progress, String text, int progressDuration, int finishDuration) {
@@ -79,12 +91,13 @@ public class MainActivity extends BaseActivity implements IMainView {
             //showFavorabilityDialog(25, "好感度+");
             switch (id) {
                 case 0://friends
+                    FriendsActivity.startActivity(getContext());
                     break;
                 case 1://chat
                     ChatActivity.startActivity(getContext());
                     break;
                 case 2://third party
-                    showFavorabilityDialog(30, "好感度+");
+                    ThirdPlatformActivity.startActivity(getContext());
                     break;
                 case 3://setting
                     SettingActivity.startActivity(getContext());
@@ -104,4 +117,11 @@ public class MainActivity extends BaseActivity implements IMainView {
             }
         }
     }
+
+    private MenuButton btn_menu;
+    private ProgressBarDeterminate pb_favorability;
+    private FrameLayout fl_scrim;
+    private ImageView iv_favourability, iv_favourability_bg, iv_goddness_sms_bg;
+    private TextView tv_goddness_sms, tv_evaluation, tv_sent;
+    private CheckBox cb_autoSend;
 }

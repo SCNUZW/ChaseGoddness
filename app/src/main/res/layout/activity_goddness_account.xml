@@ -60,7 +60,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|bottom"
                 android:layout_margin="16dp"
-                android:background="@color/colorPrimary"
+                android:textSize="18sp"
+                android:background="@color/colorPrimaryDark"
                 android:text="完成" />
         </LinearLayout>
     </com.gc.materialdesign.views.Card>

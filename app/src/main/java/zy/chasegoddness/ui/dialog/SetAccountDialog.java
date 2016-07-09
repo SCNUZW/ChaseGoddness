@@ -5,6 +5,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ public class SetAccountDialog extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         View view = inflater.inflate(R.layout.dialog_set_account, container, false);
         initView(view);
         return view;
@@ -38,8 +40,10 @@ public class SetAccountDialog extends DialogFragment {
             public void onClick(View v) {
                 String phoneNum = et_phone.getText().toString();
                 if (SetAccountModel.isPhoneNumber(phoneNum)) {
-                    tv_wrongNumber.setVisibility(View.GONE);
-                    new LocalDB(getActivity()).putPhoneNum(phoneNum);
+                    tv_wrongNumber.setVisibility(View.INVISIBLE);
+
+                    SetAccountModel.saveAccount(getContext(), phoneNum);
+
                     dismiss();
                 } else {
                     tv_wrongNumber.setVisibility(View.VISIBLE);

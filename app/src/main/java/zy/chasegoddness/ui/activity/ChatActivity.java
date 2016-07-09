@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -300,9 +299,10 @@ public class ChatActivity extends BaseActivity implements IChatView {
         public void onBindViewHolder(ViewHolder holder, int position) {
             LocalSms sms = list.get(position);
 
+            holder.tv_content.setText(sms.getBody());
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) holder.chatCard.getLayoutParams();
 
-            if (sms.getType() == LocalSms.RECIEVE_SMS) {
+            if (sms.getType() == LocalSms.Type.RECIEVE_SMS) {
                 params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
                 holder.tv_content.setGravity(Gravity.LEFT);
                 holder.btn_analyze.setVisibility(View.VISIBLE);
@@ -313,7 +313,6 @@ public class ChatActivity extends BaseActivity implements IChatView {
             }
 
             holder.chatCard.setLayoutParams(params);
-            holder.tv_content.setText(sms.getBody());
         }
 
         @Override

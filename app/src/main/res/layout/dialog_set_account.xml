@@ -6,23 +6,26 @@
 
     <EditText
         android:id="@+id/et_goddness_phone"
-        android:layout_width="match_parent"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="32dp"
         android:hint="女神手机号码呢？"
         android:inputType="phone"
         android:textCursorDrawable="@null"
-        android:textSize="16sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/tv_wrongNumber"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
+        android:paddingLeft="8dp"
         android:text="手机号码好像不合法哦"
         android:textColor="#ff0000"
         android:textSize="12sp"
-        android:visibility="gone" />
+        android:visibility="invisible" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -32,17 +35,22 @@
             android:id="@+id/btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@color/colorPrimary"
-            android:text="取消" />
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@+id/btn_goddness_ok"
+            android:background="@color/colorBtnDark"
+            android:text="取消"
+            android:textSize="18sp" />
 
         <com.gc.materialdesign.views.ButtonFlat
             android:id="@+id/btn_goddness_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_margin="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="16dp"
             android:background="@color/colorPrimaryDark"
-            android:text="完成" />
+            android:text="完成"
+            android:textSize="18sp" />
     </RelativeLayout>
 </LinearLayout>

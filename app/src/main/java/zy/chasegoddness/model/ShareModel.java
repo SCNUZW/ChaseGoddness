@@ -8,7 +8,7 @@ import cn.sharesdk.sina.weibo.SinaWeibo;
 import zy.chasegoddness.R;
 
 /**
- * Created by Administrator on 2016/6/29.
+ * 分享功能
  */
 public class ShareModel {
     public static final void showShare(Context context) {

@@ -46,7 +46,9 @@ public class GoddnessAccountActivity extends BaseActivity {
                 String phoneNum = et_phone.getText().toString();
                 if (SetAccountModel.isPhoneNumber(phoneNum)) {
                     tv_wrongNumber.setVisibility(View.GONE);
-                    new LocalDB(getContext()).putPhoneNum(phoneNum);
+
+                    SetAccountModel.saveAccount(getContext(), phoneNum);
+
                     finish();
                 } else {
                     tv_wrongNumber.setVisibility(View.VISIBLE);

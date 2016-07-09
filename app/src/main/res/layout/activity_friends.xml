@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EBEBEB"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="zy.chasegoddness.ui.activity.FriendsActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@drawable/toolbar">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:text="分享圈"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+
+        <zy.chasegoddness.ui.view.IconButton
+            android:id="@+id/btn_friends_setting"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/friends_setting" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <zy.chasegoddness.ui.view.RefreshRecyclerView
+            android:id="@+id/rrv_friends"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.gc.materialdesign.views.AutoHideButtonFloat
+            android:id="@+id/btn_friends_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="16dp"
+            android:background="@color/colorPrimary"
+            app:iconDrawable="@drawable/friends_add" />
+    </RelativeLayout>
+
+</LinearLayout>

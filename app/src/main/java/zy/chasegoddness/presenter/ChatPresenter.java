@@ -14,12 +14,11 @@ import zy.chasegoddness.ui.activity.ChatActivity;
 import zy.chasegoddness.ui.activity.iactivity.IChatView;
 
 /**
- * Created by Administrator on 2016/7/2.
+ * 聊天页面控制器
  */
 public class ChatPresenter {
 
     private IChatView view;
-    private LocalSmsModel smsModel;
 
     private String phoneNum;
 
@@ -29,18 +28,17 @@ public class ChatPresenter {
 
     public ChatPresenter(ChatActivity view) {
         this.view = view;
-        this.smsModel = new LocalSmsModel(view.getContext());
     }
 
     public void refreshDate() {
         if (phoneNumNotExist()) {
-            new SetAccountModel().showDialog(view.getSupportFragmentManager());
+            SetAccountModel.showDialog(view.getSupportFragmentManager());
 
             if (phoneNumNotExist()) {//用户点了取消
                 view.setRefreshing(false);
             }
         } else {
-            smsModel.getLocalSmsList(phoneNum, pageNum, pageSize)
+            LocalSmsModel.getLocalSmsList(view.getContext(), phoneNum, pageNum, pageSize)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<LocalSms>() {
                         @Override

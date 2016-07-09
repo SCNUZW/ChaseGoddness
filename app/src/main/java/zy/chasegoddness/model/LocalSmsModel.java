@@ -10,10 +10,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import rx.Observable;
+import rx.Single;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
 import zy.chasegoddness.model.bean.LocalSms;
 
+/**
+ * 与本地短信相关的功能
+ */
 public class LocalSmsModel {
     /**
      * 所有短信
@@ -32,50 +36,51 @@ public class LocalSmsModel {
      */
     public final static String SMS_URI_DRAFT = "content://sms/draft";
 
-    /**
-     * 短信类型：所有短信
-     */
-    public final static int ALL_SMS = 0;
-
-
-    private Context context;
-
-    public LocalSmsModel(Context context) {
-        this.context = context;
+    private LocalSmsModel() {
     }
 
     /**
-     * 分页查询本地短信
+     * 分页查询与phoneNum交互的本地短信
      *
      * @param pageSize 页面大小
      * @param pageNum  页面编号（0开始）
      */
-    public Observable<LocalSms> getLocalSmsList(String phoneNum, int pageNum, int pageSize) {
+    public static Observable<LocalSms> getLocalSmsList(Context context, String phoneNum, int pageNum, int pageSize) {
         int limit = pageSize;
         int offset = pageNum * pageSize;
-        return getLocalSmsList(limit, offset, phoneNum);
+        return getLocalSmsList(context, limit, offset, phoneNum, LocalSms.Type.ALL_SMS);
     }
 
+    /**
+     * 查询最近一条来自phoneNum的本地短信
+     */
+    public static Observable<LocalSms> getLastLocalSms(Context context, String phoneNum) {
+        return getLocalSmsList(context, 1, 0, phoneNum, LocalSms.Type.RECIEVE_SMS);
+    }
 
     /**
      * 查询本地短信
      *
      * @param limit  取多少条信息
      * @param offset 跳过多少行信息
-     * @return
+     * @param type   短信的类型
      */
-    private Observable<LocalSms> getLocalSmsList(final int limit, final int offset, final String phoneNum) {
+    public static Observable<LocalSms> getLocalSmsList(final Context context, final int limit, final int offset, final String phoneNum, final int type) {
         return Observable.create(new Observable.OnSubscribe<LocalSms>() {
             @Override
             public void call(Subscriber<? super LocalSms> subscriber) {
                 try {
-                    Log.i("zy", "is UnSubscribed:" + subscriber.isUnsubscribed());
                     if (!subscriber.isUnsubscribed()) {
 
-                        ContentResolver cr = context.getContentResolver();
+                        Uri uri;
+                        if (type == LocalSms.Type.SEND_SMS) uri = Uri.parse(SMS_URI_SEND);
+                        else if (type == LocalSms.Type.RECIEVE_SMS) uri = Uri.parse(SMS_URI_INBOX);
+                        else uri = Uri.parse(SMS_URI_ALL);
+
                         String[] projection = new String[]{"_id", "address", "person",
                                 "body", "date", "type"};
-                        Uri uri = Uri.parse(SMS_URI_ALL);
+
+                        ContentResolver cr = context.getContentResolver();
                         Cursor cur = cr.query(uri, projection, "address = " + phoneNum, null, "date desc limit " + limit + " offset " + offset);
 
                         if (cur.moveToFirst()) {
@@ -87,7 +92,6 @@ public class LocalSmsModel {
 
                             do {
                                 LocalSms sms = getLocalSmsFromCursor(cur, nameColumn, phoneNumberColumn, smsbodyColumn, dateColumn, typeColumn);
-
                                 subscriber.onNext(sms);
                             } while (cur.moveToNext());
 
@@ -104,7 +108,10 @@ public class LocalSmsModel {
         }).subscribeOn(Schedulers.io());
     }
 
-    private LocalSms getLocalSmsFromCursor(Cursor cur, int nameColumn, int phoneNumberColumn, int smsbodyColumn, int dateColumn, int typeColumn) {
+    /**
+     * 查询到Cursor对象后 映射成为LocalSms对象
+     */
+    private static LocalSms getLocalSmsFromCursor(Cursor cur, int nameColumn, int phoneNumberColumn, int smsbodyColumn, int dateColumn, int typeColumn) {
         LocalSms sms = new LocalSms();
 
         sms.setName(cur.getString(nameColumn));

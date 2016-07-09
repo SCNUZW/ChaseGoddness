@@ -4,14 +4,20 @@ package zy.chasegoddness.model.bean;
  * 本地短信
  */
 public class LocalSms {
-    /**
-     * 短信类型：接收的短信
-     */
-    public final static int RECIEVE_SMS = 1;
-    /**
-     * 短信类型：发送的短信
-     */
-    public final static int SEND_SMS = 2;
+    public class Type {
+        /**
+         * 短信类型：所有短信
+         */
+        public final static int ALL_SMS = 0;
+        /**
+         * 短信类型：接收的短信
+         */
+        public final static int RECIEVE_SMS = 1;
+        /**
+         * 短信类型：发送的短信
+         */
+        public final static int SEND_SMS = 2;
+    }
 
     /**
      * 短信内容
