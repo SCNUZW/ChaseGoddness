@@ -9,7 +9,7 @@ import android.os.Bundle;
 
 import zy.chasegoddness.R;
 
-public class PrologueActivity extends AppCompatActivity {
+public class PrologueActivity extends BaseActivity {
 
     Handler handler = new Handler();
 

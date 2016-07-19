@@ -72,7 +72,7 @@ public class FriendsLoginDialog extends DialogFragment {
     }
 
     public void hideError() {
-        if (tv_error != null) tv_error.setVisibility(View.GONE);
+        if (tv_error != null) tv_error.setVisibility(View.INVISIBLE);
     }
 
     public void showError(String str) {

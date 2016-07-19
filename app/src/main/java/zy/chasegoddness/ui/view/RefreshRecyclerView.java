@@ -88,6 +88,10 @@ public class RefreshRecyclerView extends SwipeRefreshLayout implements SwipeRefr
         recyclerView.setItemAnimator(animator);
     }
 
+    public void addItemDecoration(RecyclerView.ItemDecoration dec) {
+        recyclerView.addItemDecoration(dec);
+    }
+
     public void setOnRefreshListener(OnRefreshListener listener) {
         this.listener = listener;
     }

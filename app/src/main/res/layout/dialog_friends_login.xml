@@ -67,7 +67,7 @@
             android:padding="8dp"
             android:textColor="#ff0000"
             android:textSize="12sp"
-            android:visibility="visible" />
+            android:visibility="invisible" />
 
         <RelativeLayout
             android:layout_width="match_parent"

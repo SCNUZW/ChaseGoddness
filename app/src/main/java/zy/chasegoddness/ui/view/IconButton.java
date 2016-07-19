@@ -109,12 +109,9 @@ public class IconButton extends ImageView {
         animator = ValueAnimator.ofFloat(0, maxRadius);
         animator.setDuration(300);
         animator.setInterpolator(new AccelerateInterpolator());
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                radius = (float) animation.getAnimatedValue();
-                postInvalidate();
-            }
+        animator.addUpdateListener(animation -> {
+            radius = (float) animation.getAnimatedValue();
+            postInvalidate();
         });
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
