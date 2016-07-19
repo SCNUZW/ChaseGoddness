@@ -3,6 +3,7 @@ package zy.chasegoddness.ui.dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,11 @@ import android.widget.TextView;
 
 import com.gc.materialdesign.views.ButtonFlat;
 
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import zy.chasegoddness.R;
+import zy.chasegoddness.model.FriendsLoginModel;
+import zy.chasegoddness.model.bean.User;
 import zy.chasegoddness.ui.activity.FriendsRegisterActivity;
 
 /**
@@ -40,19 +45,40 @@ public class FriendsLoginDialog extends DialogFragment {
         btn_login = (ButtonFlat) view.findViewById(R.id.btn_friends_login);
         btn_register = (ButtonFlat) view.findViewById(R.id.btn_friends_register);
 
-        btn_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btn_login.setOnClickListener(v -> {
+            hideError();
 
-            }
+            final String phone = et_phone.getText().toString();
+            final String pwd = et_pwd.getText().toString();
+
+            User user = new User();
+            user.setMobilePhoneNumber(phone);
+            user.setUsername(phone);
+            user.setPassword(pwd);
+            FriendsLoginModel.login(user)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(u -> {/*登陆成功*/
+                        dismiss();
+                    }, throwable -> {/*登陆失败*/
+                        Log.e("zy", "FriendsLoginDialog login error: " + throwable);
+                        showError("登陆失败");
+                    });
         });
-        btn_register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-                FriendsRegisterActivity.startActivity(getContext());
-            }
+        btn_register.setOnClickListener(v -> {
+            dismiss();
+            FriendsRegisterActivity.startActivity(getContext());
         });
         return view;
+    }
+
+    public void hideError() {
+        if (tv_error != null) tv_error.setVisibility(View.GONE);
+    }
+
+    public void showError(String str) {
+        if (tv_error != null) {
+            tv_error.setVisibility(View.VISIBLE);
+            tv_error.setText(str);
+        }
     }
 }

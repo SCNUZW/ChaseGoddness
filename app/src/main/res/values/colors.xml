@@ -5,5 +5,6 @@
     <color name="colorAccent">#ffff9fcf</color>
 
     <color name="colorBtnDark">#8f000000</color>
-    <color name="colorUnClickable">#B8B8B8</color>
+    <color name="colorUnClickable">#FFB8B8B8</color>
+    <color name="colorBackground">#FFEBEBEB</color>
 </resources>

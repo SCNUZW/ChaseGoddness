@@ -11,5 +11,7 @@ public interface IBaseView {
 
     void showToast(String str, int gravity, int offsetX, int offsetY);
 
+    void finish();
+
     Context getContext();
 }

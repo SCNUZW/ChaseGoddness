@@ -13,6 +13,7 @@ import com.gc.materialdesign.views.ButtonFlat;
 
 import zy.chasegoddness.R;
 import zy.chasegoddness.global.LocalDB;
+import zy.chasegoddness.model.FormatCheckModel;
 import zy.chasegoddness.model.SetAccountModel;
 
 public class SetAccountDialog extends DialogFragment {
@@ -39,7 +40,7 @@ public class SetAccountDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 String phoneNum = et_phone.getText().toString();
-                if (SetAccountModel.isPhoneNumber(phoneNum)) {
+                if (FormatCheckModel.isPhoneNumber(phoneNum)) {
                     tv_wrongNumber.setVisibility(View.INVISIBLE);
 
                     SetAccountModel.saveAccount(getContext(), phoneNum);

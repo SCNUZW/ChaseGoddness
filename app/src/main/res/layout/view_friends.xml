@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <zy.chasegoddness.ui.view.CircleImageView
         android:id="@+id/civ_friends_avatar"
         android:layout_width="56dp"
@@ -30,6 +29,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            android:ellipsize="end"
+            android:maxLines="5"
             android:text="啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦"
             android:textSize="14sp" />
 
@@ -42,8 +43,8 @@
 
             <zy.chasegoddness.ui.view.IconButton
                 android:id="@+id/ib_friends_pic1"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_weight="1"
                 android:scaleType="fitStart"
                 android:src="@drawable/default_avatar"
@@ -51,8 +52,8 @@
 
             <zy.chasegoddness.ui.view.IconButton
                 android:id="@+id/ib_friends_pic2"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_weight="1"
                 android:scaleType="fitStart"
                 android:src="@drawable/default_avatar"
@@ -60,14 +61,12 @@
 
             <zy.chasegoddness.ui.view.IconButton
                 android:id="@+id/iv_friends_pic3"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_weight="1"
                 android:scaleType="fitStart"
                 android:src="@drawable/default_avatar"
                 android:visibility="invisible" />
         </LinearLayout>
     </LinearLayout>
-
-
 </LinearLayout>

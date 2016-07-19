@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 
 import zy.chasegoddness.R;
 import zy.chasegoddness.global.LocalDB;
+import zy.chasegoddness.model.FormatCheckModel;
 import zy.chasegoddness.model.SetAccountModel;
 
 public class GoddnessAccountActivity extends BaseActivity {
@@ -44,7 +45,7 @@ public class GoddnessAccountActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 String phoneNum = et_phone.getText().toString();
-                if (SetAccountModel.isPhoneNumber(phoneNum)) {
+                if (FormatCheckModel.isPhoneNumber(phoneNum)) {
                     tv_wrongNumber.setVisibility(View.GONE);
 
                     SetAccountModel.saveAccount(getContext(), phoneNum);

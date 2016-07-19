@@ -14,13 +14,15 @@ public interface IFriendsRegisterView extends IBaseView {
 
     String getPhoneNum();
 
-    void RegisterUnClickable();
+    void registerUnClickable();
 
-    void RegisterClickable();
+    void registerClickable();
 
-    void SMSCodeClickable();
+    void smscodeClickable();
 
-    void SMSCodeUnClickable();
+    void smscodeUnClickable();
 
-    void SMSCodeUnClickable(int second);
+    void smscodeUnClickable(int second);
+
+    void postRunnable(Runnable runnable);
 }
