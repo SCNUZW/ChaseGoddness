@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".ui.dialog.FriendsPostDialog">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="176dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/friends_post" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/text_scrim"
+            android:padding="8dp"
+            android:text="发布分享圈"
+            android:textColor="#ffffff"
+            android:textSize="25sp" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/et_friends_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:hint="分享此刻..."
+        android:maxLines="3"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp">
+
+        <zy.chasegoddness.ui.view.IconButton
+            android:id="@+id/ib_friends_camera"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:src="@drawable/camera" />
+
+        <zy.chasegoddness.ui.view.IconButton
+            android:id="@+id/ib_friends_pic1"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:src="@drawable/default_image"
+            android:visibility="invisible" />
+
+        <zy.chasegoddness.ui.view.IconButton
+            android:id="@+id/ib_friends_pic2"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:src="@drawable/default_image"
+            android:visibility="invisible" />
+
+        <zy.chasegoddness.ui.view.IconButton
+            android:id="@+id/ib_friends_pic3"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:src="@drawable/default_image"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_friends_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="error"
+        android:textColor="#ffff0000"
+        android:textSize="14sp"
+        android:visibility="invisible"
+        android:layout_marginLeft="16dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.gc.materialdesign.views.ButtonFlat
+            android:id="@+id/btn_friends_post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/colorPrimary"
+            android:padding="8dp"
+            android:text="发布"
+            android:textSize="20sp" />
+    </RelativeLayout>
+</LinearLayout>

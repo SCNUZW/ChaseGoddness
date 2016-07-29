@@ -9,12 +9,15 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--保持CPU 运转，屏幕和键盘灯有可能是关闭的,用于文件上传和下载 -->
+    <!-- 保持CPU 运转，屏幕和键盘灯有可能是关闭的,用于文件上传和下载 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!-- 推送所需的权限 -->
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- 图片选择器所需要的权限 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
     <application
         android:name=".global.BaseApplication"
         android:allowBackup="true"
@@ -52,6 +55,7 @@
         <activity
             android:name=".ui.activity.PrologueActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.activity.ShowBigImageActivity"></activity>
     </application>
 
 </manifest>

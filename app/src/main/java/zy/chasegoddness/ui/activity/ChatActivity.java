@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -28,8 +29,11 @@ import com.gc.materialdesign.views.LayoutRipple;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 import zy.chasegoddness.R;
 import zy.chasegoddness.global.LocalDB;
+import zy.chasegoddness.global.RxBus;
 import zy.chasegoddness.model.bean.LocalSms;
 import zy.chasegoddness.presenter.ChatPresenter;
 import zy.chasegoddness.ui.activity.iactivity.IChatView;
@@ -71,6 +75,7 @@ public class ChatActivity extends BaseActivity implements IChatView {
         setContentView(R.layout.activity_chat);
         initPresenter();
         initView();
+        initRxBus();
         initSoftInputHeight();
     }
 
@@ -82,13 +87,10 @@ public class ChatActivity extends BaseActivity implements IChatView {
         //聊天面板
         chatView = (RefreshRecyclerView) findViewById(R.id.rrv_chat);
         chatView.setAdapter(adapter = new ChatAdapter());
-        chatView.setOnRefreshListener(new RefreshRecyclerView.OnRefreshListener() {
-            @Override
-            public void onRefresh(boolean top) {
-                if (top) {
-                    lastVisiblePos = chatView.getLastVisiblePosition();
-                    presenter.refreshDate();
-                }
+        chatView.setOnRefreshListener(top -> {
+            if (top) {
+                lastVisiblePos = chatView.getLastVisiblePosition();
+                presenter.refreshDate();
             }
         });
 
@@ -103,25 +105,29 @@ public class ChatActivity extends BaseActivity implements IChatView {
 
         //调出自动回复的界面的按钮
         iv_ai = (ImageView) findViewById(R.id.iv_chat_ai);
-        iv_ai.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isShowAI) showAIView(true);
-                else showAIView(false);
-            }
+        iv_ai.setOnClickListener(v -> {
+            if (!isShowAI) showAIView(true);
+            else showAIView(false);
         });
 
         // 发送短信按钮
         iv_send = (ImageView) findViewById(R.id.iv_chat_send);
-        iv_send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.sendSms(et_content.getText().toString());
-            }
-        });
+        iv_send.setOnClickListener(v -> presenter.sendSms(et_content.getText().toString()));
 
         //初始化聊天数据
         presenter.refreshDate();
+    }
+
+    private void initRxBus() {
+        RxBus.getInstance().toObserverable()
+                .observeOn(Schedulers.immediate())
+                .subscribe(event -> {
+                    if (event.getDesc().equals("update ChatActivity")) {
+                        presenter.refreshDate();
+                    }
+                }, throwable -> {
+                    Log.e("zy", "ChatActivity RxBus error:" + throwable.toString());
+                });
     }
 
     /**
@@ -134,25 +140,22 @@ public class ChatActivity extends BaseActivity implements IChatView {
             keyboardHeight = DEFAULT_KEYBOARD_HEIGHT;
         }
         //通过软键盘打开和收缩时chatView大小不同而计算软键盘的高度
-        chatView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                Rect rect = new Rect();
-                chatView.getWindowVisibleDisplayFrame(rect);
+        chatView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            Rect rect = new Rect();
+            chatView.getWindowVisibleDisplayFrame(rect);
 
-                if (lastBottom > rect.bottom) {//软键盘弹起
-                    keyboardHeight = lastBottom - rect.bottom;
+            if (lastBottom > rect.bottom) {//软键盘弹起
+                keyboardHeight = lastBottom - rect.bottom;
 
-                    db.putKeyboardHeight(keyboardHeight);
+                db.putKeyboardHeight(keyboardHeight);
 
-                    //关闭自动回复面板
-                    showAIView(false);
-                    //把聊天面版拉回最新的消息
-                    if (list.size() > 0)
-                        chatView.setLastVisiblePosition(list.size() - 1);
-                }
-                lastBottom = rect.bottom;
+                //关闭自动回复面板
+                showAIView(false);
+                //把聊天面版拉回最新的消息
+                if (list.size() > 0)
+                    chatView.setLastVisiblePosition(list.size() - 1);
             }
+            lastBottom = rect.bottom;
         });
     }
 
@@ -163,28 +166,22 @@ public class ChatActivity extends BaseActivity implements IChatView {
             hideKeyBoard();
 
             if (presenter.phoneNumExist()) {
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        ViewGroup.LayoutParams layoutParams = ll_ai.getLayoutParams();
-                        layoutParams.height = keyboardHeight;
-                        ll_ai.setLayoutParams(layoutParams);
-                        ll_ai.setVisibility(View.VISIBLE);
+                handler.postDelayed(() -> {
+                    ViewGroup.LayoutParams layoutParams = ll_ai.getLayoutParams();
+                    layoutParams.height = keyboardHeight;
+                    ll_ai.setLayoutParams(layoutParams);
+                    ll_ai.setVisibility(View.VISIBLE);
 
-                        //把聊天面版拉回最新的消息
-                        if (list.size() > 0)
-                            chatView.setLastVisiblePosition(list.size() - 1);
-                    }
+                    //把聊天面版拉回最新的消息
+                    if (list.size() > 0)
+                        chatView.setLastVisiblePosition(list.size() - 1);
                 }, 100);
             } else {
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        ViewGroup.LayoutParams layoutParams = ll_hint.getLayoutParams();
-                        layoutParams.height = keyboardHeight;
-                        ll_hint.setLayoutParams(layoutParams);
-                        ll_hint.setVisibility(View.VISIBLE);
-                    }
+                handler.postDelayed(() -> {
+                    ViewGroup.LayoutParams layoutParams = ll_hint.getLayoutParams();
+                    layoutParams.height = keyboardHeight;
+                    ll_hint.setLayoutParams(layoutParams);
+                    ll_hint.setVisibility(View.VISIBLE);
                 }, 100);
             }
 
@@ -193,7 +190,6 @@ public class ChatActivity extends BaseActivity implements IChatView {
             ll_hint.setVisibility(View.GONE);
         }
     }
-
 
     private final void showKeyBoard() {
         InputMethodManager manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

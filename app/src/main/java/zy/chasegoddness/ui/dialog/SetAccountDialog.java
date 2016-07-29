@@ -13,6 +13,7 @@ import com.gc.materialdesign.views.ButtonFlat;
 
 import zy.chasegoddness.R;
 import zy.chasegoddness.global.LocalDB;
+import zy.chasegoddness.global.RxBus;
 import zy.chasegoddness.model.FormatCheckModel;
 import zy.chasegoddness.model.SetAccountModel;
 
@@ -32,32 +33,23 @@ public class SetAccountDialog extends DialogFragment {
 
     private final void initView(View v) {
         tv_wrongNumber = (TextView) v.findViewById(R.id.tv_wrongNumber);
-
         et_phone = (EditText) v.findViewById(R.id.et_goddness_phone);
-
         btn_ok = (ButtonFlat) v.findViewById(R.id.btn_goddness_ok);
-        btn_ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String phoneNum = et_phone.getText().toString();
-                if (FormatCheckModel.isPhoneNumber(phoneNum)) {
-                    tv_wrongNumber.setVisibility(View.INVISIBLE);
-
-                    SetAccountModel.saveAccount(getContext(), phoneNum);
-
-                    dismiss();
-                } else {
-                    tv_wrongNumber.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
         btn_cancel = (ButtonFlat) v.findViewById(R.id.btn_cancel);
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+
+        btn_ok.setOnClickListener(view -> {
+            String phoneNum = et_phone.getText().toString();
+            if (FormatCheckModel.isPhoneNumber(phoneNum)) {
+                tv_wrongNumber.setVisibility(View.INVISIBLE);
+
+                SetAccountModel.saveAccount(getContext(), phoneNum);
+                RxBus.getInstance().send(new RxBus.RxEvent().desc("update ChatActivity"));
                 dismiss();
+            } else {
+                tv_wrongNumber.setVisibility(View.VISIBLE);
             }
         });
+
+        btn_cancel.setOnClickListener(v1 -> dismiss());
     }
 }

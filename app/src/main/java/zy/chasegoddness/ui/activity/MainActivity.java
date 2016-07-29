@@ -48,21 +48,6 @@ public class MainActivity extends BaseActivity implements IMainView {
         pb_favorability.setProgress(30);
     }
 
-    private Handler handler = new Handler();
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PROLOGUE_REQUEST) {
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    showFavorabilityDialog(30, "好感度+");
-                }
-            }, 200);
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
     @Override
     public void showFavorabilityDialog(int progress, String text, int progressDuration, int finishDuration) {
         if (getContext() != null) {

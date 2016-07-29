@@ -32,12 +32,10 @@ public class ChatPresenter {
 
     public void refreshDate() {
         if (phoneNumNotExist()) {
+            view.setRefreshing(false);
             SetAccountModel.showDialog(view.getSupportFragmentManager());
-
-            if (phoneNumNotExist()) {//用户点了取消
-                view.setRefreshing(false);
-            }
         } else {
+            view.setRefreshing(true);
             LocalSmsModel.getLocalSmsList(view.getContext(), phoneNum, pageNum, pageSize)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<LocalSms>() {

@@ -6,8 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.v4.util.LruCache;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,30 +18,29 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.gc.materialdesign.views.ButtonFloat;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.bmob.v3.Bmob;
-import cn.bmob.v3.BmobObject;
-import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.DownloadFileListener;
-import cn.bmob.v3.listener.ProgressCallback;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 import zy.chasegoddness.R;
-import zy.chasegoddness.model.FriendsLoginModel;
+import zy.chasegoddness.global.RxBus;
 import zy.chasegoddness.model.bean.FriendsContent;
 import zy.chasegoddness.model.bean.User;
 import zy.chasegoddness.presenter.FriendsPresenter;
-import zy.chasegoddness.ui.activity.iactivity.IFriendsRegisterView;
 import zy.chasegoddness.ui.activity.iactivity.IFriendsView;
-import zy.chasegoddness.ui.dialog.FriendsLoginDialog;
+import zy.chasegoddness.ui.dialog.FriendsPostDialog;
 import zy.chasegoddness.ui.view.CircleImageView;
 import zy.chasegoddness.ui.view.IconButton;
 import zy.chasegoddness.ui.view.RefreshRecyclerView;
+import zy.chasegoddness.util.GlideCircleTransform;
 
 /**
  * 分享圈的界面
@@ -61,8 +60,8 @@ public class FriendsActivity extends BaseActivity implements IFriendsView {
         setContentView(R.layout.activity_friends);
         initPresenter();
         initView();
+        initBus();
     }
-
 
     private final void initPresenter() {
         presenter = new FriendsPresenter(this);
@@ -75,12 +74,15 @@ public class FriendsActivity extends BaseActivity implements IFriendsView {
 
         //点击发布按钮
         btn_add.setOnClickListener(v -> {
-            //TODO:发布分享圈事件
+            if (presenter.checkForLogin())
+                FriendsPostDialog.showDialog(getSupportFragmentManager());
         });
+
         //点击设置账号的按钮
         btn_setting.setOnClickListener(v -> {
             //TODO：设置分享圈账号信息
         });
+
         //分享圈的事件列表
         rrv_friends.setAdapter(mAdapter = new FriendsAdapter());
         rrv_friends.addItemDecoration(new Divider());
@@ -93,6 +95,16 @@ public class FriendsActivity extends BaseActivity implements IFriendsView {
         });
 
         presenter.init();
+    }
+
+    private void initBus() {
+        RxBus.getInstance().toObserverable()
+                .observeOn(Schedulers.immediate())
+                .subscribe(event -> {
+                    if (event.getDesc().equals("update friendsContent")) {
+                        presenter.refresh();
+                    }
+                }, throwable -> Log.e("zy", "FriendsActivity RxBus error: " + throwable.toString()));
     }
 
     public static void startActivity(Context context) {
@@ -126,21 +138,6 @@ public class FriendsActivity extends BaseActivity implements IFriendsView {
 
     class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
 
-        private final LruCache<String, Bitmap> bitmapCache;
-
-        public FriendsAdapter() {
-            int maxMemory = (int) Runtime.getRuntime().maxMemory();
-            int mCacheSize = maxMemory / 8;
-            Log.i("zy", "Friends Activity maxMemory = " + maxMemory + " , " + maxMemory / 1024 + "KB, " + maxMemory / 1024 / 1024 + "MB");
-
-            bitmapCache = new LruCache<String, Bitmap>(mCacheSize) {
-                @Override
-                protected int sizeOf(String key, Bitmap value) {
-                    return value.getByteCount();
-                }
-            };
-        }
-
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(getContext()).inflate(R.layout.view_friends, parent, false);
@@ -154,7 +151,12 @@ public class FriendsActivity extends BaseActivity implements IFriendsView {
 
             /*1.头像*/
             if (author.getAvatar() != null) {//如果有头像
-                showPicture(author.getAvatar(), holder.civ_avatar, R.drawable.default_avatar);
+                final String url = author.getAvatar().getUrl();
+                Glide.with(FriendsActivity.this).load(url)
+                        .transform(new GlideCircleTransform(getContext()))
+                        .placeholder(R.drawable.default_avatar)
+                        .into(holder.civ_avatar);
+                holder.civ_avatar.setOnClickListener(v -> presenter.showBigImage(url));
             } else {
                 holder.civ_avatar.setImageResource(R.drawable.default_avatar);
             }
@@ -172,85 +174,31 @@ public class FriendsActivity extends BaseActivity implements IFriendsView {
             /*4.发布的图片 先缓存中存在的图片*/
             if (content.getPic1() != null) {//如果有图片
                 holder.ll_picGroup.setVisibility(View.VISIBLE);
-                holder.pic1.setOnClickListener(v -> {
-                    final String url = content.getPic1().getUrl();
-                    presenter.showBigImage(bitmapCache.get(url), url);
-                });
-                showPicture(content.getPic1(), holder.pic1, R.drawable.default_image);
+                final String url = content.getPic1().getUrl();
+                Glide.with(FriendsActivity.this).load(url).placeholder(R.drawable.default_image).into(holder.pic1);
+                holder.pic1.setVisibility(View.VISIBLE);
+                holder.pic1.setOnClickListener(v -> presenter.showBigImage(url));
             } else {
                 holder.ll_picGroup.setVisibility(View.GONE);
             }
 
             if (content.getPic2() != null) {
-                holder.pic2.setOnClickListener(v -> {
-                    final String url = content.getPic2().getUrl();
-                    presenter.showBigImage(bitmapCache.get(url), url);
-                });
-                showPicture(content.getPic2(), holder.pic2, R.drawable.default_image);
+                final String url = content.getPic2().getUrl();
+                Glide.with(FriendsActivity.this).load(url).placeholder(R.drawable.default_image).into(holder.pic2);
+                holder.pic2.setVisibility(View.VISIBLE);
+                holder.pic2.setOnClickListener(v -> presenter.showBigImage(url));
             } else {
                 holder.pic2.setVisibility(View.INVISIBLE);
             }
 
             if (content.getPic3() != null) {
-                holder.pic3.setOnClickListener(v -> {
-                    final String url = content.getPic3().getUrl();
-                    presenter.showBigImage(bitmapCache.get(url), url);
-                });
-                showPicture(content.getPic3(), holder.pic3, R.drawable.default_image);
+                final String url = content.getPic3().getUrl();
+                Glide.with(FriendsActivity.this).load(url).placeholder(R.drawable.default_image).into(holder.pic3);
+                holder.pic3.setVisibility(View.VISIBLE);
+                holder.pic3.setOnClickListener(v -> presenter.showBigImage(url));
             } else {
                 holder.pic3.setVisibility(View.INVISIBLE);
             }
-        }
-
-        private void showPicture(BmobFile file, ImageView view, int defaultResourse) {
-            if (!showCachePicture(file, view)) {
-                view.setImageResource(defaultResourse);
-                if (!showDiskPicture(file, view))
-                    showNetworkPicture(file, view);
-            }
-        }
-
-        private boolean showCachePicture(BmobFile pic, ImageView view) {
-            view.setVisibility(View.VISIBLE);
-            final String url = pic.getUrl();
-            Bitmap bitmap;
-            if ((bitmap = bitmapCache.get(url)) != null) {
-                view.setImageBitmap(bitmap);
-                return true;
-            }
-            return false;
-        }
-
-        private boolean showDiskPicture(BmobFile file, ImageView view) {
-            File pic = file.getLocalFile();
-            if (pic == null) return false;
-
-            Bitmap bitmap = BitmapFactory.decodeFile(pic.getAbsolutePath());
-            view.setImageBitmap(bitmap);
-            return true;
-        }
-
-        private void showNetworkPicture(BmobFile file, ImageView view) {
-            final String url = file.getUrl();
-            view.setTag(url);
-            file.download(new DownloadFileListener() {
-                @Override
-                public void done(String path, BmobException e) {
-                    Bitmap pic = BitmapFactory.decodeFile(path);
-                    if (pic != null) {
-                        bitmapCache.put(url, pic);
-                        if (view.getTag().equals(url)) {
-                            view.setImageBitmap(pic);
-                        }
-                    } else {
-                        showCachePicture(file, view);
-                    }
-                }
-
-                @Override
-                public void onProgress(Integer integer, long l) {
-                }
-            });
         }
 
         @Override
@@ -259,7 +207,7 @@ public class FriendsActivity extends BaseActivity implements IFriendsView {
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
-            CircleImageView civ_avatar;
+            IconButton civ_avatar;
             TextView tv_name, tv_content;
             LinearLayout ll_picGroup;
             IconButton pic1, pic2, pic3;
@@ -267,13 +215,13 @@ public class FriendsActivity extends BaseActivity implements IFriendsView {
             public ViewHolder(View view) {
                 super(view);
 
-                civ_avatar = (CircleImageView) view.findViewById(R.id.civ_friends_avatar);
+                civ_avatar = (IconButton) view.findViewById(R.id.ib_friends_avatar);
                 tv_content = (TextView) view.findViewById(R.id.tv_friends_content);
                 tv_name = (TextView) view.findViewById(R.id.tv_friends_username);
                 ll_picGroup = (LinearLayout) view.findViewById(R.id.ll_friends_pic_group);
                 pic1 = (IconButton) view.findViewById(R.id.ib_friends_pic1);
                 pic2 = (IconButton) view.findViewById(R.id.ib_friends_pic2);
-                pic3 = (IconButton) view.findViewById(R.id.iv_friends_pic3);
+                pic3 = (IconButton) view.findViewById(R.id.ib_friends_pic3);
             }
         }
     }

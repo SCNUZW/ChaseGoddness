@@ -23,7 +23,7 @@ public class RxBus {
      * 也不同于BehaviourSubject除以后的事件外还会向观察者发射最近的一个事件<br>
      * 用SerializedSubject装饰可以使发射的事件串行化，防止多线程同时发射事件<br>
      */
-    private final Subject<Object, Object> _bus = new SerializedSubject<>(PublishSubject.create());
+    private final Subject<RxEvent, RxEvent> _bus = new SerializedSubject<>(PublishSubject.create());
     private static final RxBus INSTANCE = new RxBus();
 
     private RxBus() {
@@ -45,16 +45,38 @@ public class RxBus {
     //                doSomethingElse();
     //        }
     //    });
-
     public static RxBus getInstance() {
         return INSTANCE;
     }
 
-    public void send(Object o) {
+    public void send(RxEvent o) {
         _bus.onNext(o);
     }
 
-    public Observable<Object> toObserverable() {
+    public Observable<RxEvent> toObserverable() {
         return _bus;
+    }
+
+    public static class RxEvent {
+        private int id;
+        private String desc;
+
+        public int getId() {
+            return id;
+        }
+
+        public RxEvent id(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public RxEvent desc(String desc) {
+            this.desc = desc;
+            return this;
+        }
     }
 }

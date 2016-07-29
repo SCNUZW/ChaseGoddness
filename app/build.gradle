@@ -3,7 +3,7 @@ apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion "23.0.3"
 
     // **兼容Android6.0系统所需，如果这句话报错，可在dependencies标签下使用compile 'cn.bmob.android:http-legacy:1.0'**
     useLibrary 'org.apache.http.legacy'
@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId "zy.chasegoddness"
         minSdkVersion 15
-        targetSdkVersion 21
+        targetSdkVersion 22
         multiDexEnabled true
         versionCode 1
         versionName "1.0"
@@ -37,7 +37,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23+'
     compile 'com.android.support:recyclerview-v7:23+'
-
     //bmob-sdk：Bmob的android sdk包，包含了Bmob的数据存储、文件等服务，以下是最新的bmob-sdk:
     //3.5.0：请务必查看下面注释[1]
     compile 'cn.bmob.android:bmob-sdk:3.5.0'
@@ -50,11 +49,15 @@ dependencies {
     //compile 'cn.bmob.android:bmob-sms:1.0.1'
     //如果你想应用能够兼容Android6.0，请添加此依赖(org.apache.http.legacy.jar)
     compile 'cn.bmob.android:http-legacy:1.0'
-
     //Bmob中已经有rx的依赖
     //compile 'io.reactivex:rxjava:1.1.5'
     //compile 'io.reactivex:rxandroid:1.2.0'
-
+    //图片选择器
+    compile 'cn.finalteam:galleryfinal:1.4.8.7'
+    //图片加载框架fresco
+    //compile 'com.facebook.fresco:fresco:0.9.0+'
+    //图片加载框架glide
+    compile 'com.github.bumptech.glide:glide:3.7.0'
     compile project(':onekeyshare')
     compile project(':MaterialDesign')
 }

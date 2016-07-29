@@ -17,7 +17,9 @@ import zy.chasegoddness.model.FriendsModel;
 import zy.chasegoddness.model.bean.FriendsContent;
 import zy.chasegoddness.model.bean.User;
 import zy.chasegoddness.ui.activity.FriendsActivity;
+import zy.chasegoddness.ui.activity.ShowBigImageActivity;
 import zy.chasegoddness.ui.activity.iactivity.IFriendsView;
+import zy.chasegoddness.ui.dialog.FriendsLoginDialog;
 
 /**
  * 分享圈的控制器
@@ -92,7 +94,7 @@ public class FriendsPresenter {
         if (currentUser != null) {
             return true;
         } else {
-            FriendsLoginModel.showDialog(view.getSupportFragmentManager());
+            FriendsLoginDialog.showDialog(view.getSupportFragmentManager());
             return false;
         }
     }
@@ -100,7 +102,7 @@ public class FriendsPresenter {
     /**
      * 打开查看大图界面
      */
-    public void showBigImage(@Nullable Bitmap bitmap, String url) {
-
+    public void showBigImage(String url) {
+        ShowBigImageActivity.startActivity(view.getContext(), url);
     }
 }

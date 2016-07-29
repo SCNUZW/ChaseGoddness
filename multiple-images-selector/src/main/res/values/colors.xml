@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FF7F8F</color>
+    <color name="colorPrimaryDark">#FF4081</color>
+    <color name="colorAccent">#9BFF82AB</color>
+
+
+    <color name="colorLightAccent">#9BFF4081</color>
+    <color name="bottom_color_actionbar">#99FF4081</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="light_green">#00AA00</color>
+</resources>

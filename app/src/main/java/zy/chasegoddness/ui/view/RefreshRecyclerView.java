@@ -48,7 +48,7 @@ public class RefreshRecyclerView extends SwipeRefreshLayout implements SwipeRefr
                     int lastPosition = layoutManager.findLastVisibleItemPosition();
                     int itemCount = recyclerView.getAdapter().getItemCount();
 
-                    if (lastPosition >= itemCount - 2 && dy > 0) {
+                    if (lastPosition >= itemCount - 1 && dy > 0) {
                         if (!isLoadingMore) {
                             isLoadingMore = true;
                             if (listener != null) listener.onRefresh(false);
