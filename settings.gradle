@@ -1,1 +1,1 @@
-include ':app', ':sharesdk', ':onekeyshare', ':MaterialDesign'
+include ':app', ':sharesdk', ':onekeyshare', ':MaterialDesign', ':rxvolley'

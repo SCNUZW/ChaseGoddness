@@ -37,6 +37,7 @@ import zy.chasegoddness.global.RxBus;
 import zy.chasegoddness.model.bean.LocalSms;
 import zy.chasegoddness.presenter.ChatPresenter;
 import zy.chasegoddness.ui.activity.iactivity.IChatView;
+import zy.chasegoddness.ui.dialog.EmotionAnalyzeDialog;
 import zy.chasegoddness.ui.view.RefreshRecyclerView;
 
 public class ChatActivity extends BaseActivity implements IChatView {
@@ -84,8 +85,17 @@ public class ChatActivity extends BaseActivity implements IChatView {
     }
 
     private final void initView() {
-        //聊天面板
+        et_content = (EditText) findViewById(R.id.et_send_content);
+        ll_ai = (LinearLayout) findViewById(R.id.ll_chat_ai);
+        ll_hint = (LinearLayout) findViewById(R.id.ll_chat_hint);
+        lr_reply1 = (LayoutRipple) findViewById(R.id.lr_chat_auto_reply1);
+        lr_reply2 = (LayoutRipple) findViewById(R.id.lr_chat_auto_reply2);
+        lr_reply3 = (LayoutRipple) findViewById(R.id.lr_chat_auto_reply3);
         chatView = (RefreshRecyclerView) findViewById(R.id.rrv_chat);
+        iv_send = (ImageView) findViewById(R.id.iv_chat_send);
+        iv_ai = (ImageView) findViewById(R.id.iv_chat_ai);
+
+        //聊天面板
         chatView.setAdapter(adapter = new ChatAdapter());
         chatView.setOnRefreshListener(top -> {
             if (top) {
@@ -94,24 +104,13 @@ public class ChatActivity extends BaseActivity implements IChatView {
             }
         });
 
-        et_content = (EditText) findViewById(R.id.et_send_content);
-
-        ll_ai = (LinearLayout) findViewById(R.id.ll_chat_ai);
-        ll_hint = (LinearLayout) findViewById(R.id.ll_chat_hint);
-
-        lr_reply1 = (LayoutRipple) findViewById(R.id.lr_chat_auto_reply1);
-        lr_reply2 = (LayoutRipple) findViewById(R.id.lr_chat_auto_reply2);
-        lr_reply3 = (LayoutRipple) findViewById(R.id.lr_chat_auto_reply3);
-
         //调出自动回复的界面的按钮
-        iv_ai = (ImageView) findViewById(R.id.iv_chat_ai);
         iv_ai.setOnClickListener(v -> {
             if (!isShowAI) showAIView(true);
             else showAIView(false);
         });
 
         // 发送短信按钮
-        iv_send = (ImageView) findViewById(R.id.iv_chat_send);
         iv_send.setOnClickListener(v -> presenter.sendSms(et_content.getText().toString()));
 
         //初始化聊天数据
@@ -239,8 +238,7 @@ public class ChatActivity extends BaseActivity implements IChatView {
         int x = location[0];
         int y = location[1];
 
-        //Log.i("zy", "touch in " + touchX + " , " + touchY);
-        //Log.i("zy", "et touchX in " + x + " - " + (x + chatView.getWidth()) + " , touchY in " + y + " - " + (y + chatView.getHeight()));
+        //如果触摸点在chatView的范围内
         if (x <= touchX && touchX <= x + chatView.getWidth()
                 && y <= touchY && touchY <= y + chatView.getHeight()) {
             return true;
@@ -268,11 +266,6 @@ public class ChatActivity extends BaseActivity implements IChatView {
     }
 
     @Override
-    public FragmentManager getSupportFragmentManager() {
-        return super.getSupportFragmentManager();
-    }
-
-    @Override
     public void notifyDataSetChanged(int resultSize) {
         chatView.setLastVisiblePosition(resultSize + lastVisiblePos - 1);
         adapter.notifyDataSetChanged();
@@ -293,7 +286,7 @@ public class ChatActivity extends BaseActivity implements IChatView {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            LocalSms sms = list.get(position);
+            final LocalSms sms = list.get(position);
 
             holder.tv_content.setText(sms.getBody());
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) holder.chatCard.getLayoutParams();
@@ -302,6 +295,10 @@ public class ChatActivity extends BaseActivity implements IChatView {
                 params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
                 holder.tv_content.setGravity(Gravity.LEFT);
                 holder.btn_analyze.setVisibility(View.VISIBLE);
+                holder.btn_analyze.setOnClickListener(v -> {
+                    final String content = sms.getBody();
+                    EmotionAnalyzeDialog.showDialog(getSupportFragmentManager(), content);
+                });
             } else {
                 params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                 holder.tv_content.setGravity(Gravity.RIGHT);

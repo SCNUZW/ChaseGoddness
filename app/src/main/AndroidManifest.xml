@@ -55,7 +55,7 @@
         <activity
             android:name=".ui.activity.PrologueActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activity.ShowBigImageActivity"></activity>
+        <activity android:name=".ui.activity.ShowBigImageActivity" />
     </application>
 
 </manifest>

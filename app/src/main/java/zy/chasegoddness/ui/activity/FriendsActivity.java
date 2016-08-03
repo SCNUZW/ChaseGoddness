@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.util.LruCache;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -63,6 +64,12 @@ public class FriendsActivity extends BaseActivity implements IFriendsView {
         initBus();
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        presenter.init();
+    }
+
     private final void initPresenter() {
         presenter = new FriendsPresenter(this);
     }
@@ -93,8 +100,6 @@ public class FriendsActivity extends BaseActivity implements IFriendsView {
                 presenter.loadMore();
             }
         });
-
-        presenter.init();
     }
 
     private void initBus() {
