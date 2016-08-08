@@ -60,12 +60,48 @@
         android:textColor="#000000"
         android:textSize="16sp" />
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <zy.chasegoddness.ui.view.SentimentBar
+            android:id="@+id/sb_sentiment"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_emotion_good_sentiment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="正面：54.14%"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_emotion_bad_sentiment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="负面：54.00%"
+                android:textSize="14sp"
+                android:visibility="gone" />
+        </LinearLayout>
+    </RelativeLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:padding="8dp"
-        android:text="语义联想"
+        android:text="关键字"
         android:textColor="#ffffff"
         android:textSize="18sp" />
 
@@ -74,7 +110,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="正在联想..."
+        android:text="正在提取..."
         android:textColor="#000000"
         android:textSize="16sp" />
 
@@ -90,6 +126,6 @@
             android:layout_margin="8dp"
             android:background="@color/colorPrimary"
             android:text="确定"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
     </RelativeLayout>
 </LinearLayout>

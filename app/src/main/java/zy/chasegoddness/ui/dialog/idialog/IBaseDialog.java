@@ -7,4 +7,6 @@ public interface IBaseDialog {
     void dismiss();
 
     Context getContext();
+
+    Fragment getFragment();
 }

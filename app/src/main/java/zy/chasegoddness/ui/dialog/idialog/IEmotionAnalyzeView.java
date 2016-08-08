@@ -10,6 +10,8 @@ public interface IEmotionAnalyzeView extends IBaseDialog {
 
     void setContent(String content);
 
+    void showContentError(String e);
+
     String getClassify();
 
     void showClassfyError(String e);
