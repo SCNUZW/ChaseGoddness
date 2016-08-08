@@ -25,7 +25,7 @@ public class MainActivity extends BaseActivity implements IMainView {
         setContentView(R.layout.activity_main);
 
         initView();
-        PrologueActivity.startActivityForResult(getContext(), PROLOGUE_REQUEST);
+        //PrologueActivity.startActivityForResult(getContext(), PROLOGUE_REQUEST);
     }
 
     private final void initView() {

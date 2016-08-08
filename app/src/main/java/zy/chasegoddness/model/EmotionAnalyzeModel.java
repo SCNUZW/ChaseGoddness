@@ -1,12 +1,17 @@
 package zy.chasegoddness.model;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.kymjs.rxvolley.RxVolley;
 import com.kymjs.rxvolley.client.HttpParams;
+import com.kymjs.rxvolley.rx.Result;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import rx.Observable;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import zy.chasegoddness.util.Constant;
 
@@ -14,13 +19,16 @@ import zy.chasegoddness.util.Constant;
  * Created by Administrator on 2016/8/2.
  */
 public class EmotionAnalyzeModel {
+    /**
+     * 对content的类别进行分类
+     */
     public static Observable<String> getClassfy(String content) {
         final JSONArray array = new JSONArray().put(content);
         final HttpParams params = new HttpParams();
         params.putHeaders("Content-Type", "application/json");
         params.putHeaders("Accept", "application/json");
         params.putHeaders("Accept-Encoding", "UTF-8");
-        params.putHeaders("X-Token", "RWM6nX_5.4477.g2RsJn20QJZj");
+        params.putHeaders("X-Token", Constant.BosonNLPToken);
         params.putJsonParams(array.toString());
 
         return new RxVolley.Builder()
@@ -73,6 +81,9 @@ public class EmotionAnalyzeModel {
                 });
     }
 
+    /**
+     * 对content内容进行正负面百分比分析
+     */
     public static Observable<Double[]> getSentiment(String content) {
         final JSONArray array = new JSONArray().put(content);
         final HttpParams params = new HttpParams();
@@ -99,6 +110,96 @@ public class EmotionAnalyzeModel {
                         data[0] = data[1] = 0d;
                     }
                     return data;
+                });
+    }
+
+    /**
+     * 关键词提取
+     */
+    public static Observable<String[]> getKeywordArray(String content) {
+        final JSONArray array = new JSONArray().put(content);
+        final HttpParams params = new HttpParams();
+        params.putHeaders("Content-Type", "application/json");
+        params.putHeaders("Accept", "application/json");
+        params.putHeaders("Accept-Encoding", "UTF-8");
+        params.putHeaders("X-Token", Constant.BosonNLPToken);
+        params.putJsonParams(array.toString());
+        return new RxVolley.Builder()
+                .httpMethod(RxVolley.Method.POST)
+                .params(params)
+                .url(Constant.URL.keyword)
+                .contentType(RxVolley.ContentType.JSON)
+                .getResult()
+                .subscribeOn(Schedulers.io())
+                .map(result -> {
+                    try {
+                        String json = new String(result.data);
+                        JSONArray tmp = new JSONArray(json).getJSONArray(0);
+                        String[] strings = new String[tmp.length()];
+                        for (int i = 0; i < tmp.length(); i++) {
+                            String keyword = tmp.getJSONArray(i).getString(1);
+                            strings[i] = keyword;
+                        }
+                        return strings;
+                    } catch (JSONException e) {
+                        Log.e("zy", "EmotionAnalyzeModel getKeywordArray error: " + e);
+                    }
+                    return null;
+                });
+    }
+
+    public static Observable<String> getKeywords(String content) {
+        return getKeywordArray(content)
+                .flatMap(strings -> Observable.from(strings));
+    }
+
+    /**
+     * 语义联想
+     */
+    public static Observable<String[]> getSuggest(String keyword) {
+        final JSONArray array = new JSONArray().put(keyword);
+        final HttpParams params = new HttpParams();
+        params.putHeaders("Content-Type", "application/json");
+        params.putHeaders("Accept", "application/json");
+        params.putHeaders("X-Token", Constant.BosonNLPToken);
+        params.putJsonParams(array.toString());
+
+        return new RxVolley.Builder()
+                .httpMethod(RxVolley.Method.POST)
+                .params(params)
+                .url(Constant.URL.suggest)
+                .contentType(RxVolley.ContentType.JSON)
+                .getResult()
+                .subscribeOn(Schedulers.io())
+                .map((Func1<Result, String[]>) result -> {
+                    Log.i("zy", new String(result.data));
+                    return null;
+                });
+    }
+
+    /**
+     * 语义联想
+     */
+    public static Observable<String[]> getSuggests(String[] keyword) {
+        final JSONArray array = new JSONArray();
+        for (String s : keyword)
+            array.put(s);
+        final HttpParams params = new HttpParams();
+        params.putHeaders("Content-Type", "application/json");
+        params.putHeaders("Accept", "application/json");
+        params.putHeaders("X-Token", Constant.BosonNLPToken);
+        params.putJsonParams(array.toString());
+
+        return new RxVolley.Builder()
+                .httpMethod(RxVolley.Method.POST)
+                .params(params)
+                .url(Constant.URL.suggest)
+                .contentType(RxVolley.ContentType.JSON)
+                .getResult()
+                .subscribeOn(Schedulers.io())
+                .map((Func1<Result, String[]>) result -> {
+                    Log.i("zy", new String(result.data));
+                    return null;
                 });
     }
 }

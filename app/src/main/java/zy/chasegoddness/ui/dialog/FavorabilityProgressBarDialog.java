@@ -35,23 +35,15 @@ public class FavorabilityProgressBarDialog {
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_favorability, null);
 
         progressBar = (FavorabilityCircleProgressBar) view.findViewById(R.id.pb_favorability);
-        progressBar.setOnCompleteLayoutListener(new FavorabilityCircleProgressBar.OnCompleteLayoutListener() {
-            @Override
-            public void onCompleteLayout(int w, int h) {
-                if (progress >= 0f) {
-                    if (text != null)
-                        progressBar.setProgress(progress, progressDuration, finishDuration, text);
-                    else
-                        progressBar.setProgress(progress);
-                }
+        progressBar.setOnCompleteLayoutListener((w, h) -> {
+            if (progress >= 0f) {
+                if (text != null)
+                    progressBar.setProgress(progress, progressDuration, finishDuration, text);
+                else
+                    progressBar.setProgress(progress);
             }
         });
-        progressBar.setOnFinishAnimationListener(new FavorabilityCircleProgressBar.OnFinishAnimationListener() {
-            @Override
-            public void onFinish() {
-                startAnimationAfterProgress();
-            }
-        });
+        progressBar.setOnFinishAnimationListener(() -> startAnimationAfterProgress());
         progressBar.setPivotX(0f);
         progressBar.setPivotY(0f);
 
@@ -106,16 +98,13 @@ public class FavorabilityProgressBarDialog {
 
         ValueAnimator animator = ValueAnimator.ofFloat(1f, 0f);
         animator.setDuration(dismissDuration);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float value = (float) animation.getAnimatedValue();
+        animator.addUpdateListener(animation -> {
+            float value = (float) animation.getAnimatedValue();
 
-                progressBar.setX(toX + transX * value);
-                progressBar.setY(toY + transY * value);
-                progressBar.setScaleX(value);
-                progressBar.setScaleY(value);
-            }
+            progressBar.setX(toX + transX * value);
+            progressBar.setY(toY + transY * value);
+            progressBar.setScaleX(value);
+            progressBar.setScaleY(value);
         });
         animator.addListener(new AnimatorListenerAdapter() {
             @Override

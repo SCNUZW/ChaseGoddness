@@ -12,5 +12,7 @@ public class Constant {
 
         public static final String classify = "http://api.bosonnlp.com/classify/analysis";
         public static final String sentiment = "http://api.bosonnlp.com/sentiment/analysis?weibo";
+        public static final String keyword = "http://api.bosonnlp.com/keywords/analysis";
+        public static final String suggest = "http://api.bosonnlp.com/suggest/analysis";
     }
 }
