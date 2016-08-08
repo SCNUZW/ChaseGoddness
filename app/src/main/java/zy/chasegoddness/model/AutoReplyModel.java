@@ -32,6 +32,6 @@ public class AutoReplyModel {
         Observable<String> reply1 = getReply1(content);
         Observable<String> reply2 = getReply2(content);
         Observable<String> reply3 = getReply3(content);
-        return Observable.merge(reply1, reply2, reply3);
+        return Observable.mergeDelayError(reply1, reply2, reply3);
     }
 }
