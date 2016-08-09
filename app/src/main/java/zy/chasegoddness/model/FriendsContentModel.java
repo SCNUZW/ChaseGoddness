@@ -12,7 +12,7 @@ import zy.chasegoddness.model.bean.FriendsContent;
 /**
  * Created by Administrator on 2016/7/19.
  */
-public class FriendsModel {
+public class FriendsContentModel {
     public static Observable<List<FriendsContent>> getFriendsContent(int pageNum, int pageSize) {
         if (pageNum <= 0 || pageSize <= 0) {
             throw new IllegalArgumentException("pageNum or pageSize should bigger than 0");

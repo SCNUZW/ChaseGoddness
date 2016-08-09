@@ -2,7 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="zy.chasegoddness">
 
+    <uses-feature android:name="android.hardware.telephony" />
+
+    <!-- 收发短信 -->
     <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
     <!-- BmobSDK所需的权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -16,8 +20,8 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <!-- 图片选择器所需要的权限 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
 
-    <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
     <application
         android:name=".global.BaseApplication"
         android:allowBackup="true"
@@ -30,7 +34,6 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -55,7 +58,22 @@
         <activity
             android:name=".ui.activity.PrologueActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activity.ShowBigImageActivity" />
+        <activity
+            android:name=".ui.activity.ShowBigImageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.FriendsSettingActivity"
+            android:screenOrientation="portrait" />
+
+        <!--监听关闭手机的广播-->
+        <receiver
+            android:name=".broadcast.ShutdownReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_SHUTDOWN" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

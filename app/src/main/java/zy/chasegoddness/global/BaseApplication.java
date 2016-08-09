@@ -8,6 +8,7 @@ import java.util.Stack;
 
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobConfig;
+import zy.chasegoddness.model.FriendsLoginModel;
 
 public class BaseApplication extends Application {
     private Stack<Activity> activityStack;
@@ -53,9 +54,13 @@ public class BaseApplication extends Application {
     }
 
     public void exit() {
+        //关闭所有Activity
         while (!activityStack.empty()) {
             Activity activity = activityStack.peek();
             activity.finish();
         }
+
+        //分享圈账号注销
+        FriendsLoginModel.logOut();
     }
 }

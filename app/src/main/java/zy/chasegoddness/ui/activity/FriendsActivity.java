@@ -2,43 +2,31 @@ package zy.chasegoddness.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.util.LruCache;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.gc.materialdesign.views.ButtonFloat;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.bmob.v3.datatype.BmobFile;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.DownloadFileListener;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import zy.chasegoddness.R;
 import zy.chasegoddness.global.RxBus;
 import zy.chasegoddness.model.bean.FriendsContent;
 import zy.chasegoddness.model.bean.User;
-import zy.chasegoddness.presenter.FriendsPresenter;
+import zy.chasegoddness.presenter.FriendsContentPresenter;
 import zy.chasegoddness.ui.activity.iactivity.IFriendsView;
 import zy.chasegoddness.ui.dialog.FriendsPostDialog;
-import zy.chasegoddness.ui.view.CircleImageView;
 import zy.chasegoddness.ui.view.IconButton;
 import zy.chasegoddness.ui.view.RefreshRecyclerView;
 import zy.chasegoddness.util.GlideCircleTransform;
@@ -53,7 +41,7 @@ public class FriendsActivity extends BaseActivity implements IFriendsView {
     private RefreshRecyclerView rrv_friends;
     private IconButton btn_setting;
     private FriendsAdapter mAdapter;
-    private FriendsPresenter presenter;
+    private FriendsContentPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +59,7 @@ public class FriendsActivity extends BaseActivity implements IFriendsView {
     }
 
     private final void initPresenter() {
-        presenter = new FriendsPresenter(this);
+        presenter = new FriendsContentPresenter(this);
     }
 
     private final void initView() {
@@ -87,7 +75,7 @@ public class FriendsActivity extends BaseActivity implements IFriendsView {
 
         //点击设置账号的按钮
         btn_setting.setOnClickListener(v -> {
-            //TODO：设置分享圈账号信息
+            FriendsSettingActivity.startActivity(getContext());
         });
 
         //分享圈的事件列表

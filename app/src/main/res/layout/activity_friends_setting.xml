@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context=".ui.activity.FriendsSettingActivity">
+
+    <LinearLayout
+        android:id="@+id/ll_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/toolbar"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_friends_setting_avatar"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:src="@drawable/default_avatar" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="分享圈账号"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="用户名"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+    <com.gc.materialdesign.views.LayoutRipple
+        android:id="@+id/lr_friends_setting_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBackground"
+        app:rippleSpeed="100">
+
+        <TextView
+            android:id="@+id/tv_friends_setting_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:padding="16dp"
+            android:text="未设置"
+            android:textSize="18sp" />
+    </com.gc.materialdesign.views.LayoutRipple>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorUnClickable" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="个性签名"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+    <com.gc.materialdesign.views.LayoutRipple
+        android:id="@+id/lr_friends_setting_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBackground"
+        app:rippleSpeed="100">
+
+        <TextView
+            android:id="@+id/tv_friends_setting_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:padding="16dp"
+            android:scrollbars="vertical"
+            android:text="我很潇洒"
+            android:textSize="16sp" />
+    </com.gc.materialdesign.views.LayoutRipple>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorUnClickable" />
+
+    <TextView
+        android:id="@+id/tv_friends_setting_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="错误提示"
+        android:textColor="#ff0000"
+        android:textSize="14sp"
+        android:visibility="gone" />
+</LinearLayout>

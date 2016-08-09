@@ -3,6 +3,8 @@ package zy.chasegoddness.global;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.Date;
+
 /**
  * Created by Administrator on 2016/7/5.
  */
@@ -12,6 +14,7 @@ public class LocalDB {
 
     public static final String PHONE = "phoneNum";
     public static final String AUTO_SEND = "autoSend";
+    public static final String SEND_UPDATE = "sendUpdate";
     public static final String FIRST_LOGIN = "firstLogin";
     public static final String FAVORABILITY = "favorability";
     public static final String FAVOR_UPDATE = "favorabilityUpdate";
@@ -26,8 +29,7 @@ public class LocalDB {
     }
 
     public void putPhoneNum(String phoneNum) {
-        editor.putString(PHONE, phoneNum);
-        editor.commit();
+        editor.putString(PHONE, phoneNum).commit();
     }
 
     public String getPhoneNum() {
@@ -35,17 +37,23 @@ public class LocalDB {
     }
 
     public void putAutoSend(boolean isAutoSend) {
-        editor.putBoolean(AUTO_SEND, isAutoSend);
-        editor.commit();
+        editor.putBoolean(AUTO_SEND, isAutoSend).commit();
     }
 
     public boolean getAutoSend() {
         return sharedPreferences.getBoolean(AUTO_SEND, false);
     }
 
+    public void putSendUpdate(long time) {
+        editor.putLong(SEND_UPDATE, time).commit();
+    }
+
+    public long getSendUpdate() {
+        return sharedPreferences.getLong(SEND_UPDATE, 0);
+    }
+
     public void putFirstLogin(boolean isFirstLogin) {
-        editor.putBoolean(FIRST_LOGIN, isFirstLogin);
-        editor.commit();
+        editor.putBoolean(FIRST_LOGIN, isFirstLogin).commit();
     }
 
     public boolean getFirstLogin() {
@@ -53,8 +61,7 @@ public class LocalDB {
     }
 
     public void putFavorability(int favorability) {
-        editor.putInt(FAVORABILITY, favorability);
-        editor.commit();
+        editor.putInt(FAVORABILITY, favorability).commit();
     }
 
     public int getFavorability() {
@@ -62,8 +69,7 @@ public class LocalDB {
     }
 
     public void putFavorUpdate(long updateDate) {
-        editor.putLong(FAVOR_UPDATE, updateDate);
-        editor.commit();
+        editor.putLong(FAVOR_UPDATE, updateDate).commit();
     }
 
     public long getFavorUpdate() {
@@ -71,8 +77,7 @@ public class LocalDB {
     }
 
     public void putKeyboardHeight(int height) {
-        editor.putInt(KEYBOARDHEIGHT, height);
-        editor.commit();
+        editor.putInt(KEYBOARDHEIGHT, height).commit();
     }
 
     public int getKeyboardHeight() {

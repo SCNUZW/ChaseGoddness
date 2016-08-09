@@ -1,20 +1,10 @@
 package zy.chasegoddness.presenter;
 
-import android.graphics.Bitmap;
-import android.support.annotation.Nullable;
-import android.support.v4.util.LruCache;
 import android.util.Log;
-import android.widget.ImageView;
-
-import java.util.List;
 
 import cn.bmob.v3.BmobUser;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
-import rx.functions.Action1;
-import zy.chasegoddness.model.FriendsLoginModel;
-import zy.chasegoddness.model.FriendsModel;
-import zy.chasegoddness.model.bean.FriendsContent;
+import zy.chasegoddness.model.FriendsContentModel;
 import zy.chasegoddness.model.bean.User;
 import zy.chasegoddness.ui.activity.FriendsActivity;
 import zy.chasegoddness.ui.activity.ShowBigImageActivity;
@@ -24,14 +14,14 @@ import zy.chasegoddness.ui.dialog.FriendsLoginDialog;
 /**
  * 分享圈的控制器
  */
-public class FriendsPresenter {
+public class FriendsContentPresenter {
 
     private IFriendsView view;
     private User currentUser;
     private int pageNum = 1;
     private int pageSize = 10;
 
-    public FriendsPresenter(FriendsActivity view) {
+    public FriendsContentPresenter(FriendsActivity view) {
         this.view = view;
     }
 
@@ -45,8 +35,9 @@ public class FriendsPresenter {
      */
     public void refresh() {
         view.setRefreshing(true);
+        view.notifyChanged();
         pageNum = 1;
-        FriendsModel.getFriendsContent(pageNum, pageSize)
+        FriendsContentModel.getFriendsContent(pageNum, pageSize)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(friendsContents -> {
                     if (friendsContents.size() == 0)
@@ -68,7 +59,7 @@ public class FriendsPresenter {
     public void loadMore() {
         view.setRefreshing(true);
         pageNum++;
-        FriendsModel.getFriendsContent(pageNum, pageSize)
+        FriendsContentModel.getFriendsContent(pageNum, pageSize)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(friendsContents -> {
                     if (friendsContents.size() == 0) {

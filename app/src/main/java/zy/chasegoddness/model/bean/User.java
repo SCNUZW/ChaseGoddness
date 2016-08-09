@@ -7,8 +7,17 @@ import cn.bmob.v3.datatype.BmobFile;
  * Created by Administrator on 2016/7/8.
  */
 public class User extends BmobUser {
+    /**
+     * 个性签名
+     */
     private String desc;
+    /**
+     * 用户名
+     */
     private String nickName;
+    /**
+     * 头像
+     */
     private BmobFile avatar;
 
     public String getNickName() {

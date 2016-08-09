@@ -173,6 +173,7 @@ public class FriendsPostPresenter {
         GalleryFinal.openGalleryMuti(REQUEST_CODE_GALLERY, config, new GalleryFinal.OnHanlderResultCallback() {
             @Override
             public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
+                if (reqeustCode != REQUEST_CODE_GALLERY) return;
                 for (int i = 0; i < resultList.size(); i++) {
                     PhotoInfo info = resultList.get(i);
                     Log.i("zy", info.getPhotoPath());
