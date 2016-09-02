@@ -50,17 +50,14 @@ public class BaseActivity extends AppCompatActivity implements IBaseView {
 
     @Override
     public void showToast(String str) {
-        if (getContext() != null)
-            Toast.makeText(getContext(), str, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void showToast(String str, int gravity, int offsetX, int offsetY) {
-        if (getContext() != null) {
-            Toast toast = Toast.makeText(getContext(), str, Toast.LENGTH_SHORT);
-            toast.setGravity(gravity, offsetX, offsetY);
-            toast.show();
-        }
+        Toast toast = Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT);
+        toast.setGravity(gravity, offsetX, offsetY);
+        toast.show();
     }
 
     @Override

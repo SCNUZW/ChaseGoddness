@@ -2,6 +2,7 @@ package zy.chasegoddness.ui.dialog;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,5 +52,11 @@ public class SetAccountDialog extends DialogFragment {
         });
 
         btn_cancel.setOnClickListener(v1 -> dismiss());
+    }
+
+    public static SetAccountDialog showDialog(FragmentManager manager) {
+        SetAccountDialog dialog = new SetAccountDialog();
+        dialog.show(manager, "SetAccountDialog");
+        return dialog;
     }
 }

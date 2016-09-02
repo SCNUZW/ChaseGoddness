@@ -55,10 +55,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case R.id.lr_setting_adjust:
                 break;
             case R.id.lr_setting_autosend:
+                AutoSendActivity.startActivity(getContext());
                 break;
             case R.id.lr_setting_about:
                 break;
             case R.id.lr_setting_feedback:
+                FeedBackActivity.startActivity(getContext());
                 break;
             case R.id.lr_setting_push:
                 break;

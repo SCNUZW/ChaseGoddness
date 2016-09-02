@@ -14,4 +14,6 @@ public interface IBaseView {
     void finish();
 
     Context getContext();
+
+    Context getApplicationContext();
 }

@@ -16,7 +16,8 @@ import rx.schedulers.Schedulers;
 import zy.chasegoddness.util.Constant;
 
 /**
- * Created by Administrator on 2016/8/2.
+ * @author zy
+ *         情感分析的相关功能
  */
 public class EmotionAnalyzeModel {
     /**

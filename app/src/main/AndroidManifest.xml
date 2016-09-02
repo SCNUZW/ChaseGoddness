@@ -20,8 +20,8 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <!-- 图片选择器所需要的权限 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
 
+    <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
     <application
         android:name=".global.BaseApplication"
         android:allowBackup="true"
@@ -34,6 +34,7 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -64,8 +65,11 @@
         <activity
             android:name=".ui.activity.FriendsSettingActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.AutoSendActivity"
+            android:screenOrientation="portrait" />
 
-        <!--监听关闭手机的广播-->
+        <!-- 监听关闭手机的广播 -->
         <receiver
             android:name=".broadcast.ShutdownReceiver"
             android:enabled="true"
@@ -74,6 +78,13 @@
                 <action android:name="android.intent.action.ACTION_SHUTDOWN" />
             </intent-filter>
         </receiver>
+
+        <!-- 发送短信的Service -->
+        <service
+            android:name=".service.SendSMSService"
+            android:exported="false" />
+
+        <activity android:name=".ui.activity.FeedBackActivity"></activity>
     </application>
 
 </manifest>

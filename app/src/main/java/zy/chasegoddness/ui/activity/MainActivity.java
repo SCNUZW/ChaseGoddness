@@ -1,8 +1,10 @@
 package zy.chasegoddness.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,6 +13,7 @@ import com.gc.materialdesign.views.CheckBox;
 import com.gc.materialdesign.views.ProgressBarDeterminate;
 
 import zy.chasegoddness.R;
+import zy.chasegoddness.presenter.MainPresenter;
 import zy.chasegoddness.ui.activity.iactivity.IMainView;
 import zy.chasegoddness.ui.dialog.FavorabilityProgressBarDialog;
 import zy.chasegoddness.ui.view.MenuButton;
@@ -18,34 +21,46 @@ import zy.chasegoddness.ui.view.MenuButton;
 public class MainActivity extends BaseActivity implements IMainView {
 
     private static final int PROLOGUE_REQUEST = 200;
+    private MainPresenter presenter;
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initPresenter();
         initView();
         //PrologueActivity.startActivityForResult(getContext(), PROLOGUE_REQUEST);
     }
 
+    private void initPresenter() {
+        presenter = new MainPresenter(this);
+    }
+
     private final void initView() {
         fl_scrim = (FrameLayout) findViewById(R.id.fl_scrim);
-
         iv_favourability = (ImageView) findViewById(R.id.iv_favourability);
         iv_favourability_bg = (ImageView) findViewById(R.id.iv_favourability_bg);
         iv_goddness_sms_bg = (ImageView) findViewById(R.id.iv_goddness_sms_bg);
-
         tv_evaluation = (TextView) findViewById(R.id.tv_evaluation);
         tv_goddness_sms = (TextView) findViewById(R.id.tv_goddness_sms);
         tv_sent = (TextView) findViewById(R.id.tv_sent);
-
         cb_autoSend = (CheckBox) findViewById(R.id.cb_autoSend);
-
         btn_menu = (MenuButton) findViewById(R.id.btn_menu);
-        btn_menu.setOnClickMenuListener(new MainActivity.OnMenuClick());
-
         pb_favorability = (ProgressBarDeterminate) findViewById(R.id.pb_favorability);
+
+        btn_menu.setOnClickMenuListener(new MainActivity.OnMenuClick());
         pb_favorability.setProgress(30);
+        cb_autoSend.setOncheckListener((view, check) -> presenter.autoSend(check));
+
+        presenter.init();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.resume();
     }
 
     @Override
@@ -67,6 +82,66 @@ public class MainActivity extends BaseActivity implements IMainView {
     @Override
     public void showFavorabilityDialog(int progress, String text) {
         showFavorabilityDialog(progress, text, 2000, 2000);
+    }
+
+    @Override
+    public void setEveryDaySMS(CharSequence str) {
+        tv_goddness_sms.setTextColor(Color.DKGRAY);
+        tv_goddness_sms.setText(str);
+    }
+
+    @Override
+    public void setEveryDaySMSError(CharSequence e) {
+        tv_goddness_sms.setText(e);
+        tv_goddness_sms.setTextColor(Color.RED);
+    }
+
+    @Override
+    public String getEveryDaySMS() {
+        return tv_goddness_sms.getText().toString();
+    }
+
+    @Override
+    public void setAutoSend(boolean isAutoSend) {
+        handler.postDelayed(() -> cb_autoSend.setChecked(isAutoSend), 150);
+    }
+
+    @Override
+    public void setIsSendToday(boolean isSendToday) {
+        if (isSendToday) {
+            tv_sent.setText("今天已发送");
+        } else {
+            tv_sent.setText("今天未发送");
+        }
+    }
+
+    @Override
+    public void setFavorability(int favoribility) {
+        if (favoribility > 100) favoribility = 100;
+        if (favoribility < 0) favoribility = 0;
+        pb_favorability.setProgress(favoribility);
+    }
+
+    @Override
+    public int getFavorability() {
+        return pb_favorability.getProgress();
+    }
+
+    @Override
+    public void setEvaluation(CharSequence str) {
+        tv_evaluation.setTextColor(Color.DKGRAY);
+        tv_evaluation.setText(str);
+    }
+
+    @Override
+    public void setEvaluationError(CharSequence e) {
+        tv_evaluation.setTextColor(Color.RED);
+        tv_evaluation.setText(e);
+    }
+
+    @Override
+    public String getEvaluation() {
+        return tv_evaluation.getText().toString();
     }
 
     class OnMenuClick implements MenuButton.OnClickMenuListener {

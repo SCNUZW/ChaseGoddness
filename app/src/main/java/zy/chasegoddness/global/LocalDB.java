@@ -14,6 +14,8 @@ public class LocalDB {
 
     public static final String PHONE = "phoneNum";
     public static final String AUTO_SEND = "autoSend";
+    public static final String AUTO_SEND_HOUR = "autoSendHour";
+    public static final String AUTO_SEND_MINUTE = "autoSendMinute";
     public static final String SEND_UPDATE = "sendUpdate";
     public static final String FIRST_LOGIN = "firstLogin";
     public static final String FAVORABILITY = "favorability";
@@ -42,6 +44,22 @@ public class LocalDB {
 
     public boolean getAutoSend() {
         return sharedPreferences.getBoolean(AUTO_SEND, false);
+    }
+
+    public void putAutoSendHour(int hour) {
+        editor.putInt(AUTO_SEND_HOUR, hour).commit();
+    }
+
+    public int getAutoSendHour() {
+        return sharedPreferences.getInt(AUTO_SEND_HOUR, -1);
+    }
+
+    public void putAutoSendMinute(int minute) {
+        editor.putInt(AUTO_SEND_MINUTE, minute).commit();
+    }
+
+    public int getAutoSendMinute() {
+        return sharedPreferences.getInt(AUTO_SEND_MINUTE, -1);
     }
 
     public void putSendUpdate(long time) {

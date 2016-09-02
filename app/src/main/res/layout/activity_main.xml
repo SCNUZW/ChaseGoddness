@@ -78,7 +78,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="textMultiLine"
                         android:padding="16dp"
-                        android:text="\t\t今天我，寒夜里看雪飘过，怀着冷却了的心窝飘远方,风雨里追赶，雾里分不清影踪，天空海阔你与我，可会变。"
+                        android:text="正在获取..."
                         android:textColor="#000000"
                         android:textSize="14sp" />
 

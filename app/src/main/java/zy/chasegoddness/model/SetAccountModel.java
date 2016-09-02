@@ -17,12 +17,6 @@ public class SetAccountModel {
     private SetAccountModel() {
     }
 
-    public static SetAccountDialog showDialog(FragmentManager manager) {
-        SetAccountDialog dialog = new SetAccountDialog();
-        dialog.show(manager, "SetAccountDialog");
-        return dialog;
-    }
-
     public static boolean isPhoneNumExist(Context context) {
         String phoneNum = new LocalDB(context).getPhoneNum();
         return TextUtils.isEmpty(phoneNum);

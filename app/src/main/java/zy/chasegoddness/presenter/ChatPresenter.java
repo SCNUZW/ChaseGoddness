@@ -12,6 +12,7 @@ import zy.chasegoddness.model.SetAccountModel;
 import zy.chasegoddness.model.bean.LocalSms;
 import zy.chasegoddness.ui.activity.ChatActivity;
 import zy.chasegoddness.ui.activity.iactivity.IChatView;
+import zy.chasegoddness.ui.dialog.SetAccountDialog;
 
 /**
  * 聊天页面控制器
@@ -33,7 +34,7 @@ public class ChatPresenter {
     public void refreshDate() {
         if (phoneNumNotExist()) {
             view.setRefreshing(false);
-            SetAccountModel.showDialog(view.getSupportFragmentManager());
+            SetAccountDialog.showDialog(view.getSupportFragmentManager());
         } else {
             view.setRefreshing(true);
             LocalSmsModel.getLocalSmsList(view.getContext(), phoneNum, pageNum, pageSize)

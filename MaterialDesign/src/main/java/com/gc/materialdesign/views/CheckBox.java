@@ -185,7 +185,6 @@ public class CheckBox extends CustomView {
 	}
 
 	public void setChecked(boolean check) {
-		invalidate();
 		this.check = check;
 		setPressed(false);
 		changeBackgroundColor(getResources().getColor(
@@ -195,7 +194,7 @@ public class CheckBox extends CustomView {
 		}
 		if (check)
 			checkView.changeBackground();
-
+		invalidate();
 	}
 
 	public boolean isCheck() {
