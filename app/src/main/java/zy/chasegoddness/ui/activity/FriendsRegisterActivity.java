@@ -3,12 +3,18 @@ package zy.chasegoddness.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.gc.materialdesign.views.ButtonFlat;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 
 import zy.chasegoddness.R;
 import zy.chasegoddness.presenter.FriendsRegisterPresenter;
@@ -25,7 +31,6 @@ public class FriendsRegisterActivity extends BaseActivity implements IFriendsReg
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends_register);
-
         initPresenter();
         initView();
     }

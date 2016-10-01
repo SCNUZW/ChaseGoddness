@@ -33,8 +33,8 @@ public class FriendsSettingActivity extends BaseActivity implements IFriendsSett
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends_setting);
         initPresenter();
-        initRxBus();
         initView();
+        initRxBus();
     }
 
     private void initPresenter() {

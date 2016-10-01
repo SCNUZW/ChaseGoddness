@@ -41,19 +41,16 @@ public class GoddnessAccountActivity extends BaseActivity {
         tv_wrongNumber = (TextView) findViewById(R.id.tv_wrongNumber);
 
         btn_ok = (ButtonFlat) findViewById(R.id.btn_goddness_ok);
-        btn_ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String phoneNum = et_phone.getText().toString();
-                if (FormatCheckModel.isPhoneNumber(phoneNum)) {
-                    tv_wrongNumber.setVisibility(View.GONE);
+        btn_ok.setOnClickListener(v -> {
+            String phoneNum = et_phone.getText().toString();
+            if (FormatCheckModel.isPhoneNumber(phoneNum)) {
+                tv_wrongNumber.setVisibility(View.GONE);
 
-                    SetAccountModel.saveAccount(getContext(), phoneNum);
+                SetAccountModel.saveAccount(getContext(), phoneNum);
 
-                    finish();
-                } else {
-                    tv_wrongNumber.setVisibility(View.VISIBLE);
-                }
+                finish();
+            } else {
+                tv_wrongNumber.setVisibility(View.VISIBLE);
             }
         });
     }
