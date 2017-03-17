@@ -1,10 +1,17 @@
 package zy.chasegoddness.model;
 
+import android.util.Log;
+
 import com.kymjs.rxvolley.RxVolley;
 import com.kymjs.rxvolley.client.HttpParams;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 import rx.Observable;
 import rx.schedulers.Schedulers;
@@ -18,17 +25,9 @@ public class AutoReplyModel {
     }
 
     public Observable<String> getReply1(String content) {
-        JSONObject jsonOj = new JSONObject();
-        try {
-            jsonOj.put("key", "cc434a1cf69aba2fa1593abdd1038969");
-            jsonOj.put("info", content);
-        } catch (JSONException e) {
-        }
-        HttpParams params = new HttpParams();
-        params.putJsonParams(jsonOj.toString());
+        String url = "http://www.tuling123.com/openapi/api?key=cc434a1cf69aba2fa1593abdd1038969&info="+content;
         return new RxVolley.Builder()
-                .url("http://www.tuling123.com/openapi/api")
-                .params(params)
+                .url(url)
                 .getResult()
                 .subscribeOn(Schedulers.io())
                 .map(result -> {
@@ -59,28 +58,36 @@ public class AutoReplyModel {
                 });
     }
 
-    public Observable<String> getReply3(String content) {
-        String url = "http://apis.haoservice.com/efficient/robot?info="+content+"&key=ea3456f2146345deb92a89fb67b7fd32";
+    public Observable<String> getReply3(String content){
+        try {
+            content = URLEncoder.encode(content,"utf-8");
+        } catch (UnsupportedEncodingException e) {
+        }
+        String url = "http://api.smartnlp.cn/cloud/robot/58cbc6910e00005371a011c7/answer?q="+content;
         return new RxVolley.Builder()
                 .url(url)
                 .getResult()
                 .subscribeOn(Schedulers.io())
                 .map(result -> {
                     String json = new String(result.data);
+                    Log.i("zy",json);
                     JSONObject object = new JSONObject();
                     try {
                         object = new JSONObject(json);
                     } catch (JSONException e) {
                     }
-                    object = object.optJSONObject("result");
-                    return object == null ? "" : object.optString("text");
+                    try {
+                        object = object.optJSONArray("answers").getJSONObject(0);
+                    } catch (JSONException e) {
+                    }
+                    return object.optString("respond");
                 });
     }
 
     /**
      * 获取多条自动回复内容
      */
-    public Observable<String> getReply(String content) {
+    public Observable<String> getReply(String content){
         Observable<String> reply1 = getReply1(content);
         Observable<String> reply2 = getReply2(content);
         Observable<String> reply3 = getReply3(content);

@@ -10,31 +10,32 @@ import rx.Observable;
 import rx.schedulers.Schedulers;
 import zy.chasegoddness.model.bean.Evaluation;
 
-public class EvaluationModel{
-    private  EvaluationModel(){
+public class EvaluationModel {
+    private EvaluationModel() {
     }
 
-    public static Observable<Integer> getCountOfEvaluation(int favorability){
+    public static Observable<Integer> getCountOfEvaluation(int favorability) {
         favorability = normalization(favorability);
         BmobQuery<Evaluation> query = new BmobQuery<>();
-        query.addWhereEqualTo("favourability", favorability);
+        query.addWhereEqualTo("favorability", favorability);
         return query.countObservable(Evaluation.class)
                 .subscribeOn(Schedulers.io());
     }
 
-    public static Observable<Evaluation> getEvaluation(long time, int favorability){
+    public static Observable<Evaluation> getEvaluation(long time, int favorability) {
         return getCountOfEvaluation(favorability)
                 .flatMap(size -> {
+                    Log.i("zy", "evaluation size = " + size);
                     BmobQuery<Evaluation> query = new BmobQuery<>();
                     int favor = normalization(favorability);
                     int hash = hashCodeOfDate(time);
                     int id = Math.abs(hash) % size;
-                    query.addWhereEqualTo("favourability", favor);
-                    query.addWhereEqualTo("id",id);
+                    query.addWhereEqualTo("favorability", favor);
+                    query.addWhereEqualTo("id", id);
                     return query.findObjectsObservable(Evaluation.class);
                 }).flatMap(evaluations -> {
-                    for(Evaluation e:evaluations){
-                        Log.i("zy",e.getTitle()+e.getContent());
+                    for (Evaluation e : evaluations) {
+                        Log.i("zy", e.getTitle() + e.getContent());
                     }
                     return Observable.from(evaluations);
                 })
@@ -55,9 +56,6 @@ public class EvaluationModel{
      * 把好感度数值标准化到特定的几个阀值上
      */
     private static int normalization(int number) {
-        if (number < 20) return 0;
-        else if (number < 50) return 20;
-        else if (number < 70) return 50;
-        else return 70;
+        return number / 10 * 10;
     }
 }

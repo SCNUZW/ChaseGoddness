@@ -122,10 +122,7 @@ public class EveryDaySMSModel {
      * 把好感度数值标准化到特定的几个阀值上
      */
     private static int normalization(int number) {
-        if (number < 20) return 0;
-        else if (number < 50) return 20;
-        else if (number < 70) return 50;
-        else return 70;
+        return number / 10 * 10;
     }
 
     public static boolean isSendToday(Context context) {
