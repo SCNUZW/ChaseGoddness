@@ -78,6 +78,8 @@
                         android:layout_height="wrap_content"
                         android:inputType="textMultiLine"
                         android:padding="16dp"
+                        android:maxLines="2"
+                        android:ellipsize="middle"
                         android:text="正在获取..."
                         android:textColor="#000000"
                         android:textSize="14sp" />
@@ -182,12 +184,14 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginTop="8dp"
-                        android:inputType="textMultiLine"
-                        android:text="\t\t心灵鸡汤心灵鸡汤心灵鸡汤心灵鸡汤心灵鸡汤心灵鸡汤心灵鸡汤心灵鸡汤心灵鸡汤心灵鸡汤。"
+                        android:ellipsize="end"
+                        android:maxLines="3"
+                        android:text="正在获取..."
                         android:textColor="#000000"
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/btn_evaluation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"

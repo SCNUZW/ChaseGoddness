@@ -31,6 +31,7 @@ public class MainActivity extends BaseActivity implements IMainView {
 
         initPresenter();
         initView();
+        presenter.init();
         //PrologueActivity.startActivityForResult(getContext(), PROLOGUE_REQUEST);
     }
 
@@ -48,13 +49,13 @@ public class MainActivity extends BaseActivity implements IMainView {
         tv_sent = (TextView) findViewById(R.id.tv_sent);
         cb_autoSend = (CheckBox) findViewById(R.id.cb_autoSend);
         btn_menu = (MenuButton) findViewById(R.id.btn_menu);
+        btn_evaluation = (TextView) findViewById(R.id.btn_evaluation);
         pb_favorability = (ProgressBarDeterminate) findViewById(R.id.pb_favorability);
 
         btn_menu.setOnClickMenuListener(new MainActivity.OnMenuClick());
+        btn_evaluation.setOnClickListener(v -> EvaluationActivity.startActivity(getContext()));
         pb_favorability.setProgress(30);
         cb_autoSend.setOncheckListener((view, check) -> presenter.autoSend(check));
-
-        presenter.init();
     }
 
     @Override
@@ -145,7 +146,6 @@ public class MainActivity extends BaseActivity implements IMainView {
     }
 
     class OnMenuClick implements MenuButton.OnClickMenuListener {
-
         @Override
         public boolean onClickItem(int id) {
             //showFavorabilityDialog(25, "好感度+");
@@ -182,6 +182,6 @@ public class MainActivity extends BaseActivity implements IMainView {
     private ProgressBarDeterminate pb_favorability;
     private FrameLayout fl_scrim;
     private ImageView iv_favourability, iv_favourability_bg, iv_goddness_sms_bg;
-    private TextView tv_goddness_sms, tv_evaluation, tv_sent;
+    private TextView tv_goddness_sms, tv_evaluation, tv_sent, btn_evaluation;
     private CheckBox cb_autoSend;
 }

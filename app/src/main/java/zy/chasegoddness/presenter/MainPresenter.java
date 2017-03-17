@@ -8,7 +8,9 @@ import java.util.Calendar;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import zy.chasegoddness.global.LocalDB;
+import zy.chasegoddness.model.EvaluationModel;
 import zy.chasegoddness.model.EveryDaySMSModel;
+import zy.chasegoddness.model.bean.Evaluation;
 import zy.chasegoddness.model.bean.EveryDaySMS;
 import zy.chasegoddness.ui.activity.AutoSendActivity;
 import zy.chasegoddness.ui.activity.MainActivity;
@@ -28,8 +30,10 @@ public class MainPresenter {
     }
 
     public void init() {
-        int favorability = db.getFavorability();
-        EveryDaySMSModel.getEveryDaySMS(System.currentTimeMillis(), favorability)
+        final int favorability = db.getFavorability();
+        final long time = System.currentTimeMillis();
+        view.setFavorability(favorability);
+        EveryDaySMSModel.getEveryDaySMS(time, favorability)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(everyDaySMS -> {
                     view.setEveryDaySMS(everyDaySMS.getContent());
@@ -38,7 +42,13 @@ public class MainPresenter {
                     Log.e("zy", "MainPresenter init getEveryDaySMS error: " + throwable);
                 });
 
-        view.setFavorability(favorability);
+        EvaluationModel.getEvaluation(time, favorability)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(evaluation -> {
+                    view.setEvaluation("\t\t\t\t" + evaluation.getContent());
+                }, throwable -> {
+                    view.setEvaluationError("获取进度评价失败");
+                });
     }
 
     public void resume() {

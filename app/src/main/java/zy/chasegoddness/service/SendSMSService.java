@@ -19,6 +19,7 @@ import zy.chasegoddness.R;
 import zy.chasegoddness.global.LocalDB;
 import zy.chasegoddness.model.EveryDaySMSModel;
 import zy.chasegoddness.model.FormatCheckModel;
+import zy.chasegoddness.model.LocalSmsModel;
 import zy.chasegoddness.ui.activity.FriendsActivity;
 
 /**
@@ -49,11 +50,7 @@ public class SendSMSService extends IntentService {
                 .observeOn(Schedulers.immediate())
                 .subscribe(everyDaySMS -> {
                     String msg = everyDaySMS.getContent();
-                    SmsManager manager = SmsManager.getDefault();
-                    List<String> list = manager.divideMessage(msg);
-                    for (String sms : list) {
-                        manager.sendTextMessage(phone, null, sms, null, null);
-                    }
+                    LocalSmsModel.sendSMS(msg,phone);
                     Log.i("zy", "SendSMSService 发送短信：" + getLocalPhoneNum() + " -> " + phone + " :" + msg);
                     //完成短信发送
                     db.putSendUpdate(new Date().getTime());

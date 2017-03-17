@@ -84,7 +84,8 @@
             android:name=".service.SendSMSService"
             android:exported="false" />
 
-        <activity android:name=".ui.activity.FeedBackActivity"></activity>
+        <activity android:name=".ui.activity.FeedBackActivity" />
+        <activity android:name=".ui.activity.EvaluationActivity"></activity>
     </application>
 
 </manifest>

@@ -20,5 +20,10 @@ public interface IChatView extends IBaseView{
 
     void clearEditText();
 
+    void setReply1(String reply);
+    void setReply2(String reply);
+    void setReply3(String reply);
+    void setReplyOnEditText(String reply);
+
     FragmentManager getSupportFragmentManager();
 }

@@ -47,6 +47,7 @@ public class ChatActivity extends BaseActivity implements IChatView {
     private ChatAdapter adapter;
     private List<LocalSms> list = new ArrayList<>();
     private EditText et_content;
+    private TextView tv_reply1, tv_reply2, tv_reply3;
     private ImageView iv_send, iv_ai;
     private LayoutRipple lr_reply1, lr_reply2, lr_reply3;
     private LinearLayout ll_ai, ll_hint;
@@ -94,6 +95,9 @@ public class ChatActivity extends BaseActivity implements IChatView {
         chatView = (RefreshRecyclerView) findViewById(R.id.rrv_chat);
         iv_send = (ImageView) findViewById(R.id.iv_chat_send);
         iv_ai = (ImageView) findViewById(R.id.iv_chat_ai);
+        tv_reply1 = (TextView) findViewById(R.id.tv_chat_auto_reply1);
+        tv_reply2 = (TextView) findViewById(R.id.tv_chat_auto_reply2);
+        tv_reply3 = (TextView) findViewById(R.id.tv_chat_auto_reply3);
 
         //聊天面板
         chatView.setAdapter(adapter = new ChatAdapter());
@@ -109,6 +113,11 @@ public class ChatActivity extends BaseActivity implements IChatView {
             if (!isShowAI) showAIView(true);
             else showAIView(false);
         });
+
+        //自动回复界面上的可供回复选项 点击后显示在回复文本框上
+        lr_reply1.setOnClickListener(v -> presenter.setReplyContent(1));
+        lr_reply2.setOnClickListener(v -> presenter.setReplyContent(2));
+        lr_reply3.setOnClickListener(v -> presenter.setReplyContent(3));
 
         // 发送短信按钮
         iv_send.setOnClickListener(v -> presenter.sendSms(et_content.getText().toString()));
@@ -274,6 +283,26 @@ public class ChatActivity extends BaseActivity implements IChatView {
     @Override
     public void clearEditText() {
         et_content.setText("");
+    }
+
+    @Override
+    public void setReply1(String reply) {
+        tv_reply1.setText(reply);
+    }
+
+    @Override
+    public void setReply2(String reply) {
+        tv_reply2.setText(reply);
+    }
+
+    @Override
+    public void setReply3(String reply) {
+        tv_reply3.setText(reply);
+    }
+
+    @Override
+    public void setReplyOnEditText(String reply) {
+        et_content.setText(reply);
     }
 
     class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {

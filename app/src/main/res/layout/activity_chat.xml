@@ -68,6 +68,7 @@
         android:id="@+id/ll_chat_hint"
         android:layout_width="match_parent"
         android:layout_height="0dp">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -95,6 +96,7 @@
             app:rippleSpeed="100">
 
             <TextView
+                android:id="@+id/tv_chat_auto_reply1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/background_button_rectangle"
@@ -115,6 +117,7 @@
             app:rippleSpeed="100">
 
             <TextView
+                android:id="@+id/tv_chat_auto_reply2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/background_button_rectangle"
@@ -135,6 +138,7 @@
             app:rippleSpeed="100">
 
             <TextView
+                android:id="@+id/tv_chat_auto_reply3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/background_button_rectangle"

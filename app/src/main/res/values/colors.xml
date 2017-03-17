@@ -7,4 +7,6 @@
     <color name="colorBtnDark">#8f000000</color>
     <color name="colorUnClickable">#FFB8B8B8</color>
     <color name="colorBackground">#FFEBEBEB</color>
+
+    <color name="colorIconText">#FF1F1F1F</color>
 </resources>

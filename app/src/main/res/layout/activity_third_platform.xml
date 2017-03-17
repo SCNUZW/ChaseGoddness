@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="@color/colorBackground"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context="zy.chasegoddness.ui.activity.ThirdPlatformActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/ll_toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
@@ -18,8 +19,77 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="16dp"
+            android:layout_centerVertical="true"
             android:text="查看动态"
             android:textColor="#ffffff"
             android:textSize="20sp" />
+        
+        <zy.chasegoddness.ui.view.IconButton
+            android:id="@+id/btn_third_party_menu"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/menu"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"/>
+    </RelativeLayout>
+
+    <zy.chasegoddness.ui.view.SideMenu
+        android:id="@+id/sm_third_party"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <WebView
+            android:id="@+id/webview_third_party"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"/>
+
+        <ImageView
+            android:id="@+id/iv_third_party_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitEnd"
+            android:src="@drawable/third_party_bg"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </zy.chasegoddness.ui.view.SideMenu>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+
+        <zy.chasegoddness.ui.view.IconButton
+            android:id="@+id/btn_third_party_back"
+            android:layout_width="0dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:src="@drawable/webview_back" />
+
+        <zy.chasegoddness.ui.view.IconButton
+            android:id="@+id/btn_third_party_forward"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:src="@drawable/webview_forward" />
+
+        <zy.chasegoddness.ui.view.IconButton
+            android:id="@+id/btn_third_party_refresh"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/webview_refresh" />
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

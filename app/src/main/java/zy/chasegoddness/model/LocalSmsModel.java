@@ -8,6 +8,7 @@ import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import rx.Observable;
 import rx.Single;
@@ -56,6 +57,16 @@ public class LocalSmsModel {
      */
     public static Observable<LocalSms> getLastLocalSms(Context context, String phoneNum) {
         return getLocalSmsList(context, 1, 0, phoneNum, LocalSms.Type.RECIEVE_SMS);
+    }
+
+    public static void sendSMS(String content, String phoneNum) {
+        //获取短信管理器
+        android.telephony.SmsManager smsManager = android.telephony.SmsManager.getDefault();
+        //拆分短信内容（手机短信长度限制）
+        List<String> divideContents = smsManager.divideMessage(content);
+        for (String text : divideContents) {
+            smsManager.sendTextMessage(phoneNum, null, text, null, null);
+        }
     }
 
     /**
